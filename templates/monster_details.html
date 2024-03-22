@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Name}} - Détails du Monstre</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+    <div class="mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    <h1>{{.Name}}</h1>
+    <h2>Espèce: {{.Species}}</h2>
+    <p>Type: {{.Type}}</p>
+    <p>Description: {{.Description}}</p>
+    <h3>Points faibles:</h3>
+    <ul>
+        {{range .Weaknesses}}
+            <li>{{.Element}} x {{.Stars}}</li>
+        {{end}}
+    </ul>
+    <h3>Résistances:</h3>
+    <ul>
+        {{if not .Resistances}}
+            <li>Aucune</li>
+        {{else}}
+            {{range .Resistances}}
+                <li>{{.Element}}</li>
+            {{end}}
+        {{end}}
+    </ul>
+    <h3>Maladies:</h3>
+    <ul>
+        {{if not .Ailments}}
+            <li>Aucune</li>
+        {{else}}
+            {{range .Ailments}}
+                <li>{{.Name}}: {{.Description}}</li>
+            {{end}}
+        {{end}}
+    </ul>
+    <h3>Récompenses:</h3>
+    <ul>
+        {{if not .Recompense}}
+            <li>Aucune récompense</li>
+        {{else}}
+            {{range .Recompense}}
+                <li>{{.Item.Name}}</li>
+            {{end}}
+        {{end}}
+    </ul>
+</body>
+</html>

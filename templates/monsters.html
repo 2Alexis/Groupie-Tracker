@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Monsters - Monster Hunter World</title>
+  
+</head>
+<body>
+    <div class = "mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    <form action ="/monsters" method="post"> 
+    <label for="sizeFilter">Filter by size:</label>
+    <select name="sizeFilter">
+        <option value="">All</option>
+        <option value="small">Small</option>
+        <option value="large">Large</option>
+    </select>
+    
+    <label for="resistanceFilter">Filter by resistances:</label>
+    <select name="resistanceFilter">
+        <option value="">All</option>
+        <option value="fire">Fire</option>
+        <option value="water">Water</option>
+        <option value="ice">Ice</option>
+        <option value="poison">Poison</option>
+        <option value="thunder">Thuner</option>
+        <option value="dragon">Dragon</option>
+        </select>
+        <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
+        <button type="submit">OK</button>
+    <table class = "category" border="1" id="monstersTable">
+        <tr>
+            <th>Name</th>
+            <th>Species</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Weaknesses</th>
+            <th>Resistances</th>
+            <th>Ailments</th>
+            <th>Rewards</th>
+        </tr>
+        {{range .Monsters}}
+        <tr>
+            <td><a href="/monster-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Species}}</td>
+            <td>{{.Type}}</td>
+            <td>{{.Description}}</td>
+            <td>
+                {{range $index, $element := .Weaknesses}}
+                    {{if $index}}, {{end}}{{.Element}} x {{.Stars}}<br>
+                {{end}}
+            </td>
+            <td>
+                {{if not .Resistances}}
+                None
+                {{else}}
+                {{range $index, $element := .Resistances}}
+                    {{if $index}}, {{end}}{{.Element}}<br>
+                {{end}}
+                {{end}}
+            </td>
+            <td>
+                {{if not .Ailments}}
+                None
+                {{else}}
+                {{range .Ailments}}
+                    {{.Name}} : {{.Description}}<br>
+                {{end}}
+                {{end}}
+            </td>
+            <td>
+                {{if not .Recompense}}
+                No Reward
+                {{else}}
+                {{range $index, $element := .Recompense}}
+                    {{if $index}}, {{end}}{{.Item.Name}}<br>
+                {{end}}
+                {{end}}
+            </td>
+        </tr>
+        {{end}}
+    </table>
+    {{if .HasPreviousPage}}
+    <a href="/weapons?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
+    {{end}}
+
+{{if .HasNextPage}}
+<a href="/weapons?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
+{{end}}
+
+   
+</body>
+</html>

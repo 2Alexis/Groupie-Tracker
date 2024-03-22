@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Items - Monster Hunter World</title>
+  
+</head>
+<body>
+    <div class = "mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    <input type="text" id="searchInput" onkeyup="searchItems()" placeholder="Rechercher par nom d'objet..." style="margin-bottom: 10px;">
+   
+    <label for="rarityFilter">Filtrer par rareté:</label>
+<select id="rarityFilter" onchange="filterItems()">
+    <option value="">Toutes les raretés</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+   
+    <!-- Ajoutez d'autres options selon vos besoins -->
+</select>
+
+    <table class = "category" id="itemsTable">
+        <tr>
+            <th>Name</th>
+            <th>Rarity</th>
+            <th>Description</th>
+        </tr>
+        {{range .Items}}
+        <tr>
+            <td><a href="/item-details?id={{.ID}}">{{.Name}}</a></td>
+          
+            
+            <td>{{.Rarete}}</td>
+            <td>{{.Description}}</td>
+        </tr>
+        {{end}}
+    </table>
+    {{if .HasPreviousPage}}
+    <a href="/items?page={{.PreviousPage}}">Page précédente</a>
+{{end}}
+
+{{if .HasNextPage}}
+    <a href="/items?page={{.NextPage}}">Page suivante</a>
+{{end}}
+    <script>
+        function searchItems() {
+            // Récupérer la valeur saisie dans le champ de recherche
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("itemsTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function filterItems() {
+            var rarityFilter = document.getElementById("rarityFilter").value;
+        
+            var table = document.getElementById("itemsTable");
+            var rows = table.getElementsByTagName("tr");
+        
+            for (var i = 1; i < rows.length; i++) { // Commence à l'index 1 pour éviter l'en-tête
+                var rarity = rows[i].getElementsByTagName("td")[1].textContent;
+        
+                // Appliquer le filtre
+                if (rarityFilter === "" || rarity === rarityFilter) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+        
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+body{
+    background-image: url(/static/backhome.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: relative;
+}
+.img{
+    background-color: black;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+.imgtab{
+    max-width: 100%;
+    
+}
+
+.infos{
+    background-color: black;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    border : 3px solid #777;
+    border-radius: 25px 0px 0px 25px;
+    
+}
+
+.description{
+    display: flex;
+    max-width: 50%;
+    padding-right: 10%;
+    flex-direction: column;
+    color : white;
+    padding-left: 3%;
+}
+
+
+.tableau th {
+    padding-top: 5px;
+    min-height: 30px;
+    font-size: large;
+    font-weight: 1000;
+    border: 1px solid;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.tableau td {
+    font-size: large;
+    font-weight: 1000;
+    border: 1px solid;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.tableau td p {
+    text-align: right;
+    font-size: medium;
+    font-weight: 200;
+    font-style: italic;
+    color : white;
+}
+
+.title{
+    background-color: #333;
+    color : white;
+    border-color: black;
+}
+
+.tableau{
+    border: 1px solid #777;
+    border-collapse: collapse;
+    height: 50%; 
+}
+
+.tableau th, .tableau td{
+    border: 1px solid #666;
+    padding-right: 5px;
+   
+}
+
+.category {
+    color: white;
+    background-color: black;
+  
+    white-space: nowrap;
+    max-width: 100%; /* Limite la largeur maximale du tableau */
+    border-collapse: collapse;
+
+}
+
+.no-border{
+    border : none;
+}
+
+.no-border th, .no-border td {
+    border : none;
+}
+
+.category th, .category td {
+   
+    border: 2px solid #777;
+    padding: 8px;
+    
+   
+}
+
+.equipimg{
+    width: 100px;
+    height: 100px;
+}
+
+.category td{
+    text-align: left;
+    height: 50px;
+    
+}
+
+.category th {
+    background-color: #666;
+    
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    color: #666;
+    
+  padding-left: 5px;
+    font-style: italic;
+    border-bottom:  2px solid rgb(158, 158, 158);
+}
+
+h5{
+    color: white;
+}
+
+p{
+    color: rgb(200, 200, 200);
+}
+
+
+    
+    
+

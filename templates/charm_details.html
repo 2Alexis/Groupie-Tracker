@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Charm Details - Monster Hunter World</title>
+</head>
+<body>
+    <div class="mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    <h1>Charm Details</h1>
+    <div>
+        <h2>{{.Name}}</h2>
+        <h3>Ranks</h3>
+        <ul>
+            {{range .Rang}}
+            <li>Level: {{.Niveau}}</li>
+            <li>Rarity: {{.Rarete}}</li>
+            {{end}}
+        </ul>
+        <h3>Skills</h3>
+        <ul>
+            {{range .Rang}}
+            {{range .Skills}}
+            <li>{{.Name}}</li>
+            <li>Level: {{.Niveau}}</li>
+            <li>{{.Description}}</li>
+            {{end}}
+            {{end}}
+        </ul>
+    </div>
+</body>
+</html>

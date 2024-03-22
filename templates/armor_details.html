@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>{{.Name}} Details - Monster Hunter World</title>
+</head>
+<body>
+    <h1>{{.Name}} Details</h1>
+    <ul>
+        <li>Type: {{.Type}}</li>
+        <li>Rarity: {{.Rarete}}</li>
+        <li>Rank: {{.Rang}}</li>
+        <li>Base Defense: {{.Defense.Base}}</li>
+        <li>Max Defense: {{.Defense.Max}}</li>
+        <li>Augmented Defense: {{.Defense.Upgrade}}</li>
+        <li>Resistances:</li>
+        <ul>
+            {{range $key, $value := .Resistances}}
+                <li>{{$key}}: {{$value}}</li>
+            {{end}}
+        </ul>
+        <li>Skills:</li>
+        <ul>
+            {{range .Skills}}
+                <li>{{.Name}} (Level: {{.Niveau}}) - {{.Description}}</li>
+            {{end}}
+        </ul>
+        <li>Male Armor Image: <img src="{{.Assets.ImageH}}" alt="Male Armor Image"></li>
+        <li>Female Armor Image: <img src="{{.Assets.ImageF}}" alt="Female Armor Image"></li>
+    </ul>
+</body>
+</html>

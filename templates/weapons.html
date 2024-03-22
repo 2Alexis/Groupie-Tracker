@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Weapons - Monster Hunter World</title>
+ 
+</head>
+<body>
+    <div class = "mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+   
+   
+    <div style="margin-top: 20px; text-align: center;">
+        <form action="/weapons" method="GET">
+            
+            <label for="rarityFilter">Filtrer par rareté:</label>
+            <select name="rarityFilter" >
+                <option value="">Toutes les raretés</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                
+                 
+            </select>
+            
+            <label for="elementFilter">Filtrer par élément:</label>
+            <select name="elementFilter" >
+                <option value="">Tous les éléments</option>
+                <option value="fire">Fire</option>
+                <option value="water">Water</option>
+                <option value="poison">Poison</option>
+                <option value="thunder">Thunder</option>
+                <option value="dragon">Dragon</option>
+                <option value="paralysis">Paralysis</option>
+                <option value="ice">Ice</option>
+           
+            </select>
+            
+            <label for="damageTypeFilter">Filtrer par type de dégâts:</label>
+            <select name="damageTypeFilter" >
+                <option value="">Tous les types de dégâts</option>
+                <option value="sever">Sever</option>
+                <option value="blunt">Blunt</option>
+                <option value="projectile">Projectile</option>
+            
+            </select>
+            <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
+            <button type="submit">OK</button>
+        </form>
+    </div>
+
+
+    <table class = "category" border="1" id="weaponsTable">
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Rarity</th>
+            <th>Attack (Display)</th>
+            <th>Attack (Raw)</th>
+            <th>Elements</th>
+            <th>Damage Type</th>
+            <th>Image</th>
+        </tr>
+        {{range .Weapons}}
+        <tr>
+            <td><a class = "link" href="/weapon-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Type}}</td>
+            <td>{{.Rarity}}</td>
+            <td>{{.Attack.Display}}</td>
+            <td>{{.Attack.Raw}}</td>
+            <td>
+                {{if not .Element}}
+                    None
+                {{else}}
+                    {{range $index, $element := .Element}}
+                        {{if $index}}, {{end}}{{.Type}}<br>Damage : {{.Damage}}
+                    {{end}}
+                {{end}}
+            </td>
+            <td>{{.TypeDegats}}</td>
+            <td>
+                <img class = "equipimg" src="{{.Assets.Image}}" alt="Weapon Image">
+            </td>
+        </tr>
+        {{end}}
+    </table>
+
+    {{if .HasPreviousPage}}
+    <a href="/weapons?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
+    {{end}}
+
+{{if .HasNextPage}}
+<a href="/weapons?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
+{{end}}
+
+ 
+</body>
+</html>

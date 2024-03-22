@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Decorations - Monster Hunter World</title>
+  
+</head>
+<body>
+    <div class = "mhwimg" style="text-align: center;">
+        <a href="/index.html">
+        <img src="static/mhwlogo.png" alt="logo M">
+    </a>
+    </div>
+    <input type="text" id="searchInput" onkeyup="searchDecorations()" placeholder="Rechercher par nom de décoration..." style="margin-bottom: 10px;">
+   
+    <label for="rarityFilter">Filtrer par rareté:</label>
+<select id="rarityFilter" onchange="filterDeco()">
+    <option value="">Toutes les raretés</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+</select>
+
+
+    <table class = "category" border="1"  id="decoTable">
+        <tr>
+            <th>Name</th>
+            <th>Rarity</th>
+            <th>Skills</th>
+        </tr>
+        {{range .Decorations}}
+        <tr>
+            <td><a href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
+         
+            <td>{{.Rarete}}</td>
+            <td>
+                {{range $index, $element := .Skills}}
+                    {{if $index}}{{end}}{{$element.Name}}<br>Level : {{$element.Niveau}}<br>{{$element.Description}}<br><br>
+                {{end}}
+            </td>
+           
+        </tr>
+        {{end}}
+    </table>
+    {{if .HasPreviousPage}}
+    <a href="/décorations?page={{.PreviousPage}}">Page précédente</a>
+{{end}}
+
+{{if .HasNextPage}}
+    <a href="/décorations?page={{.NextPage}}">Page suivante</a>
+{{end}}
+    <script>
+        function searchDecorations() {
+            // Récupérer la valeur saisie dans le champ de recherche
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("decoTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function filterDeco() {
+            var rarityFilter = document.getElementById("rarityFilter").value;
+        
+            var table = document.getElementById("decoTable");
+            var rows = table.getElementsByTagName("tr");
+        
+            for (var i = 1; i < rows.length; i++) { // Commence à l'index 1 pour éviter l'en-tête
+                var rarity = rows[i].getElementsByTagName("td")[1].textContent;
+        
+                // Appliquer le filtre
+                if (rarityFilter === "" || rarity === rarityFilter) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+        
+
+    </script>
+</body>
+</html>

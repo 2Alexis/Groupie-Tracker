@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Decoration Details - Monster Hunter World</title>
+</head>
+<body>
+    <div class="mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    <h1>Decoration Details</h1>
+    <div>
+        <h2>{{.Name}}</h2>
+        <h3>Rarity: {{.Rarete}}</h3>
+        <h3>Skills</h3>
+        <ul>
+            {{range .Skills}}
+            <li>Name: {{.Name}}</li>
+            <li>Level: {{.Niveau}}</li>
+            <li>Description: {{.Description}}</li>
+            {{end}}
+        </ul>
+    </div>
+</body>
+</html>

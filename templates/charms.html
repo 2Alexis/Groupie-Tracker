@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Charms - Monster Hunter World</title>
+  
+</head>
+<body>
+    <div class = "mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    <input type="text" id="searchInput" onkeyup="searchCharms()" placeholder="Rechercher par nom de charmes..." style="margin-bottom: 10px;">
+   
+    <table class = "category" border="1" id="charmsTable">
+        <tr>
+            <th>Name</th>
+            <th>Ranks</th>
+            <th>Skills</th>
+        </tr>
+        {{range .Charms}}
+        <tr>
+            <td><a href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>
+                {{range $index, $element := .Rang}}
+                    {{if $index}}{{end}}Level : {{$element.Niveau}}<br>Rarity : {{$element.Rarete}}<br><br>
+                {{end}}
+            </td>
+            <td>
+                {{range $index, $element := .Rang}}
+                    {{range $index, $skill := $element.Skills}}
+                        {{if $index}}, {{end}}{{.Name}}<br>Level : {{$skill.Niveau}}<br>{{$skill.Description}}<br><br>
+                    {{end}}
+                {{end}}
+            </td>
+        </tr>
+        {{end}}
+    </table>
+    {{if .HasPreviousPage}}
+    <a href="/charms?page={{.PreviousPage}}">Page précédente</a>
+{{end}}
+
+{{if .HasNextPage}}
+    <a href="/charms?page={{.NextPage}}">Page suivante</a>
+{{end}}
+    <script>
+        function searchCharms() {
+            // Récupérer la valeur saisie dans le champ de recherche
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("charmsTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
