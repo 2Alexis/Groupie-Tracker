@@ -7,23 +7,32 @@
     <title>Decoration Details - Monster Hunter World</title>
 </head>
 <body>
-    <div class="mhwimg" style="text-align: center;">
-        <a href="/index.html">
-            <img src="static/mhwlogo.png" alt="logo M">
-        </a>
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
     </div>
-    <h1>Decoration Details</h1>
-    <div>
+    <h1>{{.Name}} Details</h1>
+    <div class="container">
         <h2>{{.Name}}</h2>
         <h3>Rarity: {{.Rarete}}</h3>
         <h3>Skills</h3>
-        <ul>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Level</th>
+                <th>Description</th>
+            </tr>
             {{range .Skills}}
-            <li>Name: {{.Name}}</li>
-            <li>Level: {{.Niveau}}</li>
-            <li>Description: {{.Description}}</li>
+            <tr>
+                <td>{{.Name}}</td>
+                <td>{{.Niveau}}</td>
+                <td>{{.Description}}</td>
+            </tr>
             {{end}}
-        </ul>
+        </table>
     </div>
 </body>
 </html>

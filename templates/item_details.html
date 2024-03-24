@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/detail.css">
     <title>Item Details - Monster Hunter World</title>
 </head>
 <body>
-    <div class="mhwimg" style="text-align: center;">
+    <div class="container">
         <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
-    <h1>Item Details</h1>
+    <h1>{{.Name}} Details</h1>
     <div>
         <h2>{{.Name}}</h2>
-        <p>Rarity: {{.Rarete}}</p>
-        <p>Description: {{.Description}}</p>
+        <table>
+            <tr>
+                <th>Rareté</th>
+                <td>{{.Rarete}}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{.Description}}</td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

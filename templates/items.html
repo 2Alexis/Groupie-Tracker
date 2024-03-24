@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Items - Monster Hunter World</title>
   
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
-        <a href="/index.html">
+    <div class = "header">
+        <div class ="logo">
+      <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
+</div>
+<div class="filter-section">
     <form action="/items" method="GET">
         
     <label for="rarityFilter">Filtrer par rareté:</label>
@@ -33,10 +36,11 @@
    
     <!-- Ajoutez d'autres options selon vos besoins -->
 </select>
-<input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
-<button type="submit">OK</button>
+<input type="text" name="q" placeholder="Rechercher un objet..." value="{{.Query}}">
+<button class ="search-btn" type="submit">Rechercher</button>
 </form>
-    <table class = "category" id="itemsTable">
+</div>
+    <table class = "weapon-table" id="itemsTable">
         <tr>
             <th>Name</th>
             <th>Rarity</th>
@@ -45,7 +49,7 @@
         </tr>
         {{range .Items}}
         <tr>
-            <td><a href="/item-details?id={{.ID}}">{{.Name}}</a></td>
+            <td><a class ="link" href="/item-details?id={{.ID}}">{{.Name}}</a></td>
           
             
             <td>{{.Rarete}}</td>
@@ -55,7 +59,7 @@
                 <input type="hidden" name="id" value="{{ .ID }}">
                 <input type="hidden" name="name" value="{{ .Name }}">
                 <input type="hidden" name="rarity" value="{{ .Rarete }}">
-                <button type="submit">Add to Favorites</button>
+                <button class = "fav" type="submit">&#x2661;</button>
             </form></td>
         </tr>
         {{end}}

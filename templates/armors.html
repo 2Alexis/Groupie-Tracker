@@ -8,11 +8,14 @@
   
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
-        <a href="/index.html">
+    <div class = "header">
+        <div class = "logo">
+            <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
+</div>
+<div class="filter-section">
     <form action ="/armors" method="GET">
     <label for="typeFilter">Filter by type:</label>
     <select name="typeFilter" >
@@ -49,10 +52,10 @@
         <option value="12">12</option>
         
     </select>
-    <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
-    <button type="submit">OK</button>
+    <input type="text" name="q" placeholder="Rechercher une armure..." value="{{.Query}}">
+    <button class = "search-btn" type="submit">Rechercher</button>
 </form>
-
+</div>
 
     <table class = "category" border="1"  id="armorTable">
         <tr>
@@ -64,12 +67,13 @@
             <th>Max defense</th>
             <th>Augmented defense</th>
             <th>Resistances</th>
+            <th>Skills</th>
             <th>Image men / women</th>
             <th>Favoris</th>
         </tr>
         {{range .Armors}}
         <tr>
-            <td><a href="/armor-details?id={{.ID}}">{{.Name}}</a></td>
+            <td><a class = "link" href="/armor-details?id={{.ID}}">{{.Name}}</a></td>
             <td>{{.Type}}</td>
             <td>{{.Rarete}}</td>
             <td>{{.Rang}}</td>
@@ -103,11 +107,13 @@
                 <input type="hidden" name="rarity" value="{{ .Rarete }}">
                 <input type="hidden" name="imageMale" value="{{ .Assets.ImageH }}">
                 <input type="hidden" name="imageFemale" value="{{ .Assets.ImageF }}">
-                <button type="submit">Add to Favorites</button>
+                <button class = "fav" type="submit">&#x2661;</button>
             </form></td>
         </tr>
+    </div>
         {{end}}
     </table>
+    <div class = "pagination">
     {{if .HasPreviousPage}}
     <a href="/armors?page={{.PreviousPage}}&rarityFilter={{.RarityFilter}}&rankFilter={{.RankFilter}}&typeFilter={{.TypeFilter}}&q={{.Query}}">Page précédente</a>
     {{end}}
@@ -115,7 +121,7 @@
     {{if .HasNextPage}}
     <a href="/armors?page={{.NextPage}}&rarityFilter={{.RarityFilter}}&rankFilter={{.RankFilter}}&typeFilter={{.TypeFilter}}&q={{.Query}}">Page suivante</a>
     {{end}}
-
+    </div>
    
 </body>
 </html>

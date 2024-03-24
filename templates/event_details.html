@@ -7,26 +7,48 @@
     <title>Event Details - Monster Hunter World</title>
 </head>
 <body>
-    <div class="mhwimg" style="text-align: center;">
-        <a href="/index.html">
-            <img src="static/mhwlogo.png" alt="logo M">
-        </a>
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
     </div>
-    <h1>Event Details</h1>
-    <div>
+    <h1>{{.Name}} Details</h1>
+    <div class="container">
         <h2>{{.Name}}</h2>
-        <p>Type: {{.Type}}</p>
-        <p>Rang: {{.Rang}}</p>
-        <p>Description: {{.Description}}</p>
-        <p>Requirements: 
-            {{if not .Exigences}}
-                None
-            {{else}}
-                {{.Exigences}}
-            {{end}}
-        </p>
-        <p>Success: {{.Objectif}}</p>
-        <p>Location: {{.Localisation.Name}}</p>
+        <table>
+            <tr>
+                <th>Type</th>
+                <td>{{.Type}}</td>
+            </tr>
+            <tr>
+                <th>Rang</th>
+                <td>{{.Rang}}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{.Description}}</td>
+            </tr>
+            <tr>
+                <th>Requirements</th>
+                <td>
+                    {{if not .Exigences}}
+                        None
+                    {{else}}
+                        {{.Exigences}}
+                    {{end}}
+                </td>
+            </tr>
+            <tr>
+                <th>Success</th>
+                <td>{{.Objectif}}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>{{.Localisation.Name}}</td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

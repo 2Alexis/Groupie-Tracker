@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Events - Monster Hunter World</title>
    
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
-        <a href="/index.html">
+    <div class="header">
+        <div class="logo">  
+             <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
-
+</div>
+    <div class="filter-section">
     <form action ="/events" method="GET">
     <label for="typeFilter">Filtrer par type d'événement :</label>
     <select name="typeFilter" >
@@ -38,10 +40,10 @@
         <option value="9">9</option>
         <!-- Ajoutez d'autres options selon vos besoins -->
     </select>
-    <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
-    <button type="submit">OK</button>
+    <input type="text" name="q" placeholder="Rechercher un événement..." value="{{.Query}}">
+    <button class = "search-btn" type="submit">Rechercher</button>
     </form>
-    
+    <div>
 
     <table class = "category" id="eventsTable">
         <tr>
@@ -57,7 +59,7 @@
         {{range .Events}}
         <tr>
            
-            <td><a href="/event-details?id={{.ID}}">{{.Name}}</a></td>
+            <td><a class = "link" href="/event-details?id={{.ID}}">{{.Name}}</a></td>
          
             <td>{{.Type}}</td>
             <td>{{.Rang}}</td>
@@ -77,7 +79,7 @@
                 <input type="hidden" name="type" value="{{ .Type }}">
              
 
-                <button type="submit">Add to Favorites</button>
+                <button class = "fav" type="submit">&#x2661;</button>
             </form></td>
         </tr>
         {{end}}

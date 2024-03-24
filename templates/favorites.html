@@ -3,102 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/detail.css">
     <title>Favoris - Monster Hunter World</title>
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
 </head>
 <body>
-    <div class="mhwimg" style="text-align: center;">
-        <a href="/index.html">
-            <img src="static/mhwlogo.png" alt="logo M">
-        </a>
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
     </div>
     <h1>Favoris</h1>
-    <h2>Armures favorites</h2>
-    <ul>
-        {{range .FavoriteItems.Armors}}
-        <li>
-            {{.ID}} : {{.Name}} {{.Rarete}}  {{.Type}}
-            <img class = "equipimg" src="{{.Assets.ImageH}}" alt="Armor Image">
-            <img class = "equipimg" src="{{.Assets.ImageF}}" alt="Armor Image">
-             - <a href="/remove-favorite?id={{.ID}}&type=weapons">Retirer des favoris</a>
-        </li>
-        {{else}}
-        <li>Aucune arme favorite</li>
-        {{end}}
-    </ul>
 
-    <h2>Armes favoris</h2>
-    <ul>
-        {{range .FavoriteItems.Weapons}}
-        <li>
-            {{.ID}} : {{.Name}} {{.Rarity}}  {{.Type}}
-            <img class = "equipimg" src="{{.Assets.Image}}" alt="Weapon Image">
-             - <a href="/remove-favorite?id={{.ID}}&type=weapons">Retirer des favoris</a>
-        </li>
+    <h2>Armures favorites</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Rareté</th>
+            <th>Type</th>
+            <th>Image Homme</th>
+            <th>Image Femme</th>
+            <th>Action</th>
+        </tr>
+        {{range .FavoriteItems.Armors}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td><a class = "link" href="/armor-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Rarete}}</td>
+            <td>{{.Type}}</td>
+            <td><img class="equipimg" src="{{.Assets.ImageH}}" alt="Armor Image"></td>
+            <td><img class="equipimg" src="{{.Assets.ImageF}}" alt="Armor Image"></td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=armors">Retirer des favoris</a></td>
+        </tr>
         {{else}}
-        <li>Aucune arme favorite</li>
+        <tr><td colspan="7">Aucune armure favorite</td></tr>
         {{end}}
-    </ul>
+    </table>
+<br><br>
+
+    <h2>Armes favorites</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Rareté</th>
+            <th>Type</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+        {{range .FavoriteItems.Weapons}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td><a class = "link" href="/weapon-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Rarity}}</td>
+            <td>{{.Type}}</td>
+            <td><img class="equipimg" src="{{.Assets.Image}}" alt="Weapon Image"></td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=weapons">Retirer des favoris</a></td>
+        </tr>
+        {{else}}
+        <tr><td colspan="6">Aucune arme favorite</td></tr>
+        {{end}}
+    </table>
+    <br><br>
 
     <h2>Monstres favoris</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Espèce</th>
+            <th>Type</th>
+            <th>Action</th>
+        </tr>
         {{range .FavoriteItems.Monsters}}
-        <li>
-            {{.ID}} : {{.Name}} {{.Species}} {{.Type}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
-        </li>
+        <tr>
+            <td>{{.ID}}</td>
+            <td><a class = "link" href="/monster-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Species}}</td>
+            <td>{{.Type}}</td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a></td>
+        </tr>
         {{else}}
-        <li>Aucun monstre favori</li>
+        <tr><td colspan="5">Aucun monstre favori</td></tr>
         {{end}}
-    </ul>
+    </table>
+<br><br>
+
     <h2>Objets favoris</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Rareté</th>
+            <th>Action</th>
+        </tr>
         {{range .FavoriteItems.Objets}}
-        <li>
-            {{.ID}} : {{.Name}} Rareté : {{.Rarete}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
-        </li>
+        <tr>
+            <td><a class = "link" href="/item-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Name}}</td>
+            <td>{{.Rarete}}</td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=items">Retirer des favoris</a></td>
+        </tr>
         {{else}}
-        <li>Aucun monstre favori</li>
+        <tr><td colspan="4">Aucun objet favori</td></tr>
         {{end}}
-    </ul>
+    </table>
+    <br><br>
+
     <h2>Compétences favorites</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Action</th>
+        </tr>
         {{range .FavoriteItems.Skills}}
-        <li>
-            {{.ID}} : {{.Name}}  - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
-        </li>
+        <tr>
+            <td>{{.ID}}</td>
+            <td><a class = "link" href="/skill-details?id={{.ID}}">{{.Name}}</a></td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=skills">Retirer des favoris</a></td>
+        </tr>
         {{else}}
-        <li>Aucun monstre favori</li>
+        <tr><td colspan="3">Aucune compétence favorite</td></tr>
         {{end}}
-    </ul>
+    </table>
+<br><br>
+
+
     <h2>Evenements favoris</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Action</th>
+        </tr>
         {{range .FavoriteItems.Events}}
-        <li>
-            {{.ID}} : {{.Name}} {{.Type}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
-        </li>
+        <tr>
+            <td>{{.ID}}</td>
+            <td><a class = "link" href="/event-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Type}}</td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=events">Retirer des favoris</a></td>
+        </tr>
         {{else}}
-        <li>Aucun monstre favori</li>
+        <tr><td colspan="4">Aucun événement favori</td></tr>
         {{end}}
-    </ul>
+    </table>
+    <br><br>
+
     <h2>Décorations favorites</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Rareté</th>
+            <th>Action</th>
+        </tr>
         {{range .FavoriteItems.Deco}}
-        <li>
-            {{.ID}} : {{.Name}} Rareté : {{.Rarete}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
-        </li>
+        <tr>
+            <td>{{.ID}}</td>
+            <td><a class = "link" href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Rarete}}</td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=deco">Retirer des favoris</a></td>
+        </tr>
         {{else}}
-        <li>Aucun monstre favori</li>
+        <tr><td colspan="4">Aucune décoration favorite</td></tr>
         {{end}}
-    </ul>
+    </table>
+<br><br>
+
+
     <h2>Charmes favoris</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Action</th>
+        </tr>
         {{range .FavoriteItems.Charms}}
-        <li>
-            {{.ID}} : {{.Name}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
-        </li>
+        <tr>
+            <td>{{.ID}}</td>
+            <td><a class = "link" href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
+            <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=charms">Retirer des favoris</a></td>
+        </tr>
         {{else}}
-        <li>Aucun monstre favori</li>
+        <tr><td colspan="3">Aucun charme favori</td></tr>
         {{end}}
-    </ul>
-</body>
-</html>
+        </table>
+        
+        </body>
+        </html>

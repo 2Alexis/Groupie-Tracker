@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Decorations - Monster Hunter World</title>
   
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
+    <div class = "header">
+    <div class = "logo">
         <a href="/index.html">
         <img src="static/mhwlogo.png" alt="logo M">
     </a>
     </div>
-    
+</div>
+    <div class="filter-section">
 <form action ="/décorations" method="GET">
     <label for="rarityFilter">Filtrer par rareté:</label>
         <select name="rarityFilter" >
@@ -27,20 +29,21 @@
             <option value="11">11</option>
             <option value="12">12</option>
         </select><br/><br/>
-    <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
-    <button type="submit">OK</button>
+    <input type="text" name="q" placeholder="Rechercher une décoration..." value="{{.Query}}">
+    <button class = "search-btn" type="submit">Recherchere</button>
 </form>
-    
+    <div>
 
-    <table class = "category" border="1"  id="decoTable">
+    <table class = "weapon-table" border="1"  id="decoTable">
         <tr>
             <th>Name</th>
             <th>Rarity</th>
             <th>Skills</th>
+            <th>Favoris</th>
         </tr>
         {{range .Decorations}}
         <tr>
-            <td><a href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
+            <td><a class = "link" href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
          
             <td>{{.Rarete}}</td>
             <td>
@@ -55,11 +58,12 @@
                 <input type="hidden" name="rarete" value="{{ .Rarete }}">
              
 
-                <button type="submit">Add to Favorites</button>
+                <button class = "fav" type="submit">&#x2661;</button>
             </form></td>
         </tr>
         {{end}}
     </table>
+    <div class = "pagination">
     {{if .HasPreviousPage}}
     <a href="/décorations?page={{.PreviousPage}}&rarityFilter={{.RarityFilter}}&q={{.Query}}">Page précédente</a>
     {{end}}
@@ -67,6 +71,6 @@
     {{if .HasNextPage}}
     <a href="/décorations?page={{.NextPage}}&rarityFilter={{.RarityFilter}}&q={{.Query}}">Page suivante</a>
     {{end}}
-
+    </div>
    </body>
 </html>

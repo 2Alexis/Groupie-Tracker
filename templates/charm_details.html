@@ -3,39 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/detail.css">
     <title>Charm Details - Monster Hunter World</title>
 </head>
 <body>
-    <div class="mhwimg" style="text-align: center;">
-        <a href="/index.html">
-            <img src="static/mhwlogo.png" alt="logo M">
-        </a>
-
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
     </div>
-
-    
-    
-    <h1>Charm Details</h1>
-    <div>
+    <h1>{{.Name}} Details</h1>
+    <div class="container">
         <h2>{{.Name}}</h2>
         <h3>Ranks</h3>
-        <ul>
+        <table>
+            <tr>
+                <th>Level</th>
+                <th>Rareté</th>
+            </tr>
             {{range .Rang}}
-            <li>Level: {{.Niveau}}</li>
-            <li>Rarity: {{.Rarete}}</li>
+            <tr>
+                <td>{{.Niveau}}</td>
+                <td>{{.Rarete}}</td>
+            </tr>
             {{end}}
-        </ul>
+        </table>
         <h3>Skills</h3>
-        <ul>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Level</th>
+                <th>Description</th>
+            </tr>
             {{range .Rang}}
             {{range .Skills}}
-            <li>{{.Name}}</li>
-            <li>Level: {{.Niveau}}</li>
-            <li>{{.Description}}</li>
+            <tr>
+                <td>{{.Name}}</td>
+                <td>{{.Niveau}}</td>
+                <td>{{.Description}}</td>
+            </tr>
             {{end}}
             {{end}}
-        </ul>
+        </table>
     </div>
 </body>
 </html>

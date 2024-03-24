@@ -7,53 +7,77 @@
     <link rel="stylesheet" type="text/css" href="static/detail.css">
 </head>
 <body>
-    <div class = "header">
-    <div class="logo">
-        <a href="/index.html">
-            <img src="static/mhwlogo.png" alt="logo M">
-        </a>
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
     </div>
-    </div>
+    <h2>{{.Name}} Details</h2>
     <div class="container">
-    <h1>{{.Name}}</h1>
-    <h2>Espèce: {{.Species}}</h2>
-    <p>Type: {{.Type}}</p>
-    <p>Description: {{.Description}}</p>
-    <h3>Points faibles:</h3>
-    <ul>
-        {{range .Weaknesses}}
-            <li>{{.Element}} x {{.Stars}}</li>
-        {{end}}
-    </ul>
-    <h3>Résistances:</h3>
-    <ul>
-        {{if not .Resistances}}
-            <li>Aucune</li>
-        {{else}}
-            {{range .Resistances}}
-                <li>{{.Element}}</li>
+        <h1>{{.Name}}</h1>
+        <table>
+            <tr>
+                <th>Espèce</th>
+                <td>{{.Species}}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{.Type}}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{.Description}}</td>
+            </tr>
+        </table>
+        
+        <h3>Points faibles:</h3>
+        <table>
+            <tr>
+                <th>Élément</th>
+                <th>Étoiles</th>
+            </tr>
+            {{range .Weaknesses}}
+            <tr>
+                <td>{{.Element}}</td>
+                <td>{{.Stars}}</td>
+            </tr>
             {{end}}
-        {{end}}
-    </ul>
-    <h3>Maladies:</h3>
-    <ul>
-        {{if not .Ailments}}
-            <li>Aucune</li>
-        {{else}}
-            {{range .Ailments}}
-                <li>{{.Name}}: {{.Description}}</li>
+        </table>
+
+        <h3>Résistances:</h3>
+        <ul>
+            {{if not .Resistances}}
+                <li>Aucune</li>
+            {{else}}
+                {{range .Resistances}}
+                    <li>{{.Element}}</li>
+                {{end}}
             {{end}}
-        {{end}}
-    </ul>
-    <h3>Récompenses:</h3>
-    <ul>
-        {{if not .Recompense}}
-            <li>Aucune récompense</li>
-        {{else}}
-            {{range .Recompense}}
-                <li>{{.Item.Name}}</li>
+        </ul>
+
+        <h3>Maladies:</h3>
+        <ul>
+            {{if not .Ailments}}
+                <li>Aucune</li>
+            {{else}}
+                {{range .Ailments}}
+                    <li>{{.Name}}: {{.Description}}</li>
+                {{end}}
             {{end}}
-        {{end}}
-    </ul>
+        </ul>
+
+        <h3>Récompenses:</h3>
+        <ul>
+            {{if not .Recompense}}
+                <li>Aucune récompense</li>
+            {{else}}
+                {{range .Recompense}}
+                    <li>{{.Item.Name}}</li>
+                {{end}}
+            {{end}}
+        </ul>
+    </div>
 </body>
 </html>

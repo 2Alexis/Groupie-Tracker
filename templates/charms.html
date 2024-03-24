@@ -3,30 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Charms - Monster Hunter World</title>
   
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
-        <a href="/index.html">
+    <div class = "header">
+        <div class="logo">
+            <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
+</div>
+<div class="filter-section">
 <form action ="/charms" method="GET">
-    <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
-    <button type="submit">OK</button>
+    <input type="text" name="q" placeholder="Rechercher un charme..." value="{{.Query}}">
+    <button class = "search-btn" type="submit">Rechercer</button>
 </form>
     
-    <table class = "category" border="1" id="charmsTable">
+    <table class = "weapon-table" border="1" id="charmsTable">
         <tr>
             <th>Name</th>
             <th>Ranks</th>
             <th>Skills</th>
+            <th>Favoris</th>
         </tr>
         {{range .Charms}}
         <tr>
-            <td><a href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
+            <td><a class = "link" href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
             <td>
                 {{range $index, $element := .Rang}}
                     {{if $index}}{{end}}Level : {{$element.Niveau}}<br>Rarity : {{$element.Rarete}}<br><br>
@@ -46,11 +50,13 @@
 
              
 
-                <button type="submit">Add to Favorites</button>
+                <button class = "fav" type="submit">&#x2661;</button>
             </form></td>
         </tr>
         {{end}}
     </table>
+  </div> 
+  <div class = "pagination">
     {{if .HasPreviousPage}}
     <a href="/charms?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
     {{end}}
@@ -58,6 +64,6 @@
     {{if .HasNextPage}}
     <a href="/charms?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
     {{end}}
-  
+  </div>
 </body>
 </html>

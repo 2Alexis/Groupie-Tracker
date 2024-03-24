@@ -3,32 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/detail.css">
     <title>{{.Name}} Details - Monster Hunter World</title>
 </head>
 <body>
+    <div class = "header">
+        <div class = "logo">
+            <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    </div>
     <h1>{{.Name}} Details</h1>
-    <ul>
-        <li>Type: {{.Type}}</li>
-        <li>Rarity: {{.Rarete}}</li>
-        <li>Rank: {{.Rang}}</li>
-        <li>Base Defense: {{.Defense.Base}}</li>
-        <li>Max Defense: {{.Defense.Max}}</li>
-        <li>Augmented Defense: {{.Defense.Upgrade}}</li>
-        <li>Resistances:</li>
-        <ul>
-            {{range $key, $value := .Resistances}}
-                <li>{{$key}}: {{$value}}</li>
-            {{end}}
-        </ul>
-        <li>Skills:</li>
-        <ul>
-            {{range .Skills}}
-                <li>{{.Name}} (Level: {{.Niveau}}) - {{.Description}}</li>
-            {{end}}
-        </ul>
-        <li>Male Armor Image: <img src="{{.Assets.ImageH}}" alt="Male Armor Image"></li>
-        <li>Female Armor Image: <img src="{{.Assets.ImageF}}" alt="Female Armor Image"></li>
-    </ul>
+    <div class="container">
+        <table>
+            <tr>
+                <th>Attribut</th>
+                <th>Valeur</th>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>{{.Type}}</td>
+            </tr>
+            <tr>
+                <td>Rareté</td>
+                <td>{{.Rarete}}</td>
+            </tr>
+            <tr>
+                <td>Rang</td>
+                <td>{{.Rang}}</td>
+            </tr>
+            <tr>
+                <td>Base Defense</td>
+                <td>{{.Defense.Base}}</td>
+            </tr>
+            <tr>
+                <td>Max Defense</td>
+                <td>{{.Defense.Max}}</td>
+            </tr>
+            <tr>
+                <td>Augmented Defense</td>
+                <td>{{.Defense.Upgrade}}</td>
+            </tr>
+            <tr>
+                <td>Resistances</td>
+                <td>
+                    <ul>
+                        {{range $key, $value := .Resistances}}
+                            <li>{{$key}}: {{$value}}</li>
+                        {{end}}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Skills</td>
+                <td>
+                    <ul>
+                        {{range .Skills}}
+                            <li>{{.Name}} (Level: {{.Niveau}}) - {{.Description}}</li>
+                        {{end}}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Male Armor Image</td>
+                <td><img src="{{.Assets.ImageH}}" alt="Male Armor Image"></td>
+            </tr>
+            <tr>
+                <td>Female Armor Image</td>
+                <td><img src="{{.Assets.ImageF}}" alt="Female Armor Image"></td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>

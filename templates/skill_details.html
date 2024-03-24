@@ -4,21 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="static/detail.css">
-    <title>Skill Details - Monster Hunter World</title>
+    <title>{{.Name}} Details - Monster Hunter World</title>
 </head>
 <body>
-    
-    <h1>Skill Details</h1>
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
+    </div>
+    <h1>{{.Name}} Details</h1>
     <div class="container">
         <h2>{{.Name}}</h2>
         
         <p>Description: {{.Description}}</p><br>
         <h3>Ranks</h3>
-        <ul>
+        <table>
+            <tr>
+                <th>Niveau</th>
+                <th>Description</th>
+            </tr>
             {{range .Rang}}
-            <li>Niveau {{.Niveau}} : {{.Description}}</li>
+            <tr>
+                <td>{{.Niveau}}</td>
+                <td>{{.Description}}</td>
+            </tr>
             {{end}}
-        </ul>
+        </table>
     </div>
 </body>
 </html>
