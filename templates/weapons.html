@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Weapons - Monster Hunter World</title>
  
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
-        <a href="/index.html">
-            <img src="static/mhwlogo.png" alt="logo M">
-        </a>
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
     </div>
    
-   
-    <div style="margin-top: 20px; text-align: center;">
+    <div class="filter-section">
         <form action="/weapons" method="GET">
             
             <label for="rarityFilter">Filtrer par rareté:</label>
@@ -55,12 +56,12 @@
             
             </select>
             <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
-            <button type="submit">OK</button>
+            <button  class="search-btn" type="submit">Rechercher</button>
         </form>
     </div>
 
 
-    <table class = "category" border="1" id="weaponsTable">
+    <table class = "weapons-table" border="1" id="weaponsTable">
         <tr>
             <th>Name</th>
             <th>Type</th>
@@ -70,6 +71,7 @@
             <th>Elements</th>
             <th>Damage Type</th>
             <th>Image</th>
+            <th>favoris</th>
         </tr>
         {{range .Weapons}}
         <tr>
@@ -91,18 +93,31 @@
             <td>
                 <img class = "equipimg" src="{{.Assets.Image}}" alt="Weapon Image">
             </td>
+            
+                <td> <form action="/add-favorite" method="get">
+                    <input type="hidden" name="category" value="weapons">
+                    <input type="hidden" name="id" value="{{ .ID }}">
+                    <input type="hidden" name="name" value="{{ .Name }}">
+                    <input type="hidden" name="type" value="{{ .Type }}">
+                    <input type="hidden" name="rarity" value="{{ .Rarity }}">
+                    <input type="hidden" name="image" value="{{ .Assets.Image }}">
+
+                    <button class="fav" type="submit">&#x2661;</button>
+                </form></td>
+            
+       
         </tr>
         {{end}}
     </table>
-
+<div class =  "pagination">
     {{if .HasPreviousPage}}
-    <a href="/weapons?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
+    <a  href="/weapons?page={{.PreviousPage}}&rarityFilter={{.RarityFilter}}&elementFilter={{.ElementFilter}}&damageTypeFilter={{.DamagesTypeFilter}}&q={{.Query}}">Page précédente</a>
     {{end}}
-
-{{if .HasNextPage}}
-<a href="/weapons?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
-{{end}}
-
+    
+    {{if .HasNextPage}}
+    <a  href="/weapons?page={{.NextPage}}&rarityFilter={{.RarityFilter}}&elementFilter={{.ElementFilter}}&damageTypeFilter={{.DamagesTypeFilter}}&q={{.Query}}">Page suivante</a>
+    {{end}}
+<div>
  
 </body>
 </html>

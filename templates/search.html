@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
+    <title>Monster Hunter World</title>
+</head>
+<body>
+     <div class="header">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="static/mhwlogo.png" alt="logo M">
+            </a>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <form action="/search" method="GET">
+            <input type="text" name="q" placeholder="Rechercher une arme..." value="caca">
+            <button  class="search-btn" type="submit">Rechercher</button>
+        </form>
+    </div>
+      <h2>Armures</h2>
+    <table class = "weapons-table" border="1"  id="armorTable">
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Rarity</th>
+            <th>Ranks</th>
+            <th>Base defense</th>
+            <th>Max defense</th>
+            <th>Augmented defense</th>
+            <th>Resistances</th>
+            <th>Skills</th>
+            <th>Image men / women</th>
+            <th>Favoris</th>
+        </tr>
+        {{range .Armors}}
+        <tr>
+            <td><a class = "link" href="/armor-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Type}}</td>
+            <td>{{.Rarete}}</td>
+            <td>{{.Rang}}</td>
+            <td>{{.Defense.Base}}</td>
+            <td>{{.Defense.Max}}</td>
+            <td>{{.Defense.Upgrade}}</td>
+            <td>
+                {{range $key, $value := .Resistances}}
+                    {{$key}}: {{$value}}<br>
+                {{end}}
+            </td>
+            <td>
+                {{if not .Skills}}
+                None
+                {{else}}
+                {{range $index, $element := .Skills}}
+                    {{if $index}}, {{end}}{{.Name}}<br>Level : {{.Niveau}}<br>{{.Description}}
+                {{end}}
+                {{end}}
+            </td>
+            <td>
+                <img src="{{.Assets.ImageH}}" alt="Male Armor Image">
+                <img src="{{.Assets.ImageF}}" alt="Female Armor Image">
+            </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="armors">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <input type="hidden" name="type" value="{{ .Type }}">
+                <input type="hidden" name="rang" value="{{ .Rang }}">
+                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+                <input type="hidden" name="imageMale" value="{{ .Assets.ImageH }}">
+                <input type="hidden" name="imageFemale" value="{{ .Assets.ImageF }}">
+              <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
+        </tr>
+        {{end}}
+    </table>
+    <h2>Charms</h2>
+    <!-- Afficher les informations sur les charmes -->
+    <table class = "weapons-table" border="1" id="charmsTable">
+        <tr>
+            <th>Name</th>
+            <th>Ranks</th>
+            <th>Skills</th>
+        </tr>
+        {{range .Charms}}
+        <tr>
+            <td><a class = "link" href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>
+                {{range $index, $element := .Rang}}
+                    {{if $index}}{{end}}Level : {{$element.Niveau}}<br>Rarity : {{$element.Rarete}}<br><br>
+                {{end}}
+            </td>
+            <td>
+                {{range $index, $element := .Rang}}
+                    {{range $index, $skill := $element.Skills}}
+                        {{if $index}}, {{end}}{{.Name}}<br>Level : {{$skill.Niveau}}<br>{{$skill.Description}}<br><br>
+                    {{end}}
+                {{end}}
+            </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="charms">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+
+             
+
+              <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
+        </tr>
+        {{end}}
+    </table>
+
+    <h2>Decorations</h2>
+    <!-- Afficher les informations sur les monstres -->
+    <table class = "weapons-table" border="1"  id="decoTable">
+        <tr>
+            <th>Name</th>
+            <th>Rarity</th>
+            <th>Skills</th>
+        </tr>
+        {{range .Deco}}
+        <tr>
+            <td><a class = "link" href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
+         
+            <td>{{.Rarete}}</td>
+            <td>
+                {{range $index, $element := .Skills}}
+                    {{if $index}}{{end}}{{$element.Name}}<br>Level : {{$element.Niveau}}<br>{{$element.Description}}<br><br>
+                {{end}}
+            </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="deco">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <input type="hidden" name="rarete" value="{{ .Rarete }}">
+             
+
+              <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
+        </tr>
+        {{end}}
+    </table>
+    <h2>Events</h2>
+    <table class = "weapons-table" id="eventsTable">
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Ranks</th>
+            <th>Description</th>
+            <th>Requirements</th>
+            <th>Success</th>
+            <th>Locations</th>
+            <th>Favoris</th>
+        </tr>
+        {{range .Events}}
+        <tr>
+           
+            <td><a class = "link" href="/event-details?id={{.ID}}">{{.Name}}</a></td>
+         
+            <td>{{.Type}}</td>
+            <td>{{.Rang}}</td>
+            <td>{{.Description}}</td>
+            <td>
+                {{if not .Exigences}}
+                None
+                {{else}}
+                {{.Exigences}}</td>
+                {{end}}
+            <td>{{.Objectif}}</td>
+            <td>{{.Localisation.Name}}</td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="events">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <input type="hidden" name="type" value="{{ .Type }}">
+             
+
+              <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
+        </tr>
+        {{end}}
+    </table>
+    <h2>Items</h2>
+    <table class = "weapons-table" id="itemsTable">
+        <tr>
+            <th>Name</th>
+            <th>Rarity</th>
+            <th>Description</th>
+            <th>favoris</th>
+        </tr>
+        {{range .Items}}
+        <tr>
+            <td><a class = "link" href="/item-details?id={{.ID}}">{{.Name}}</a></td>
+          
+            
+            <td>{{.Rarete}}</td>
+            <td>{{.Description}}</td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="items">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+              <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
+        </tr>
+        {{end}}
+    </table>
+    <h2>Monsters</h2>
+    <table class = "weapons-table" border="1" id="monstersTable">
+        <tr>
+            <th>Favoris</th>
+            <th>Name</th>
+            <th>Species</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Weaknesses</th>
+            <th>Resistances</th>
+            <th>Ailments</th>
+            <th>Rewards</th>
+            <th>Favoris</th>
+          
+        </tr>
+        {{range .Monsters}}
+        <tr>
+           
+            <td><a class = "link" href="/monster-details?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Species}}</td>
+            <td>{{.Type}}</td>
+            <td>{{.Description}}</td>
+            
+            <td>
+                {{range $index, $element := .Weaknesses}}
+                    {{if $index}}, {{end}}{{.Element}} x {{.Stars}}<br>
+                {{end}}
+            </td>
+            <td>
+                {{if not .Resistances}}
+                None
+                {{else}}
+                {{range $index, $element := .Resistances}}
+                    {{if $index}}, {{end}}{{.Element}}<br>
+                {{end}}
+                {{end}}
+            </td>
+            <td>
+                {{if not .Ailments}}
+                None
+                {{else}}
+                {{range .Ailments}}
+                    {{.Name}} : {{.Description}}<br>
+                {{end}}
+                {{end}}
+            </td>
+            <td>
+                {{if not .Recompense}}
+                No Reward
+                {{else}}
+                {{range $index, $element := .Recompense}}
+                    {{if $index}}, {{end}}{{.Item.Name}}<br>
+                {{end}}
+                {{end}}
+            </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="monsters">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="type" value="{{ .Type }}">
+                <input type="hidden" name="species" value="{{ .Species }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+              <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
+        </tr>
+        {{end}}
+    </table>
+    <h2>Skills</h2>
+    <table class = "weapons-table"  id="skillsTable">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Ranks</th>
+            <th>Favoris</th>
+        </tr>
+        {{range .Skills}}
+        <tr>
+            <td><a class = "link"  href="/skill-details?id={{.ID}}">{{.Name}}</a></td>
+           
+            <td>{{.Description}}</td>
+            <td>
+                <ul>
+                    {{range .Rang}}
+                    <li>
+                        Niveau {{.Niveau}} : {{.Description}}
+                    </li>
+                    {{end}}
+                </ul>
+            </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="skills">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+
+
+              <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
+        </tr>
+        {{end}}
+    </table>
+
+</body>
+</html>

@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Skills - Monster Hunter World</title>
    
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
-        <a href="/index.html">
+    <div class="header">
+        <div class="logo">
+       <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
-    <input type="text" id="searchInput" onkeyup="searchSkills()" placeholder="Rechercher par nom de compétence..." style="margin-bottom: 10px;">
+</div>
    
-    <table class = "category"  id="skillsTable">
+<div class="filter-section">
+    <form action ="/skills" method="GET">
+        <input type="text" name="q" placeholder="Rechercher une compétence..." value="{{.Query}}">
+        <button type="submit">OK</button>
+    </form>
+</div>
+    <table class = "weapons-table"  id="skillsTable">
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Ranks</th>
+            <th>Favoris</th>
         </tr>
         {{range .Skills}}
         <tr>
@@ -35,38 +43,26 @@
                     {{end}}
                 </ul>
             </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="skills">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+
+
+                <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
         </tr>
         {{end}}
     </table>
+    <div class =  "pagination">
     {{if .HasPreviousPage}}
-    <a href="/skills?page={{.PreviousPage}}">Page précédente</a>
-{{end}}
-
-{{if .HasNextPage}}
-    <a href="/skills?page={{.NextPage}}">Page suivante</a>
-{{end}}
-    <script>
-        function searchSkills() {
-            // Récupérer la valeur saisie dans le champ de recherche
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("skillsTable");
-            tr = table.getElementsByTagName("tr");
-
-            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
+    <a href="/skills?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
+    {{end}}
+    
+    {{if .HasNextPage}}
+    <a href="/skills?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
+    {{end}}
+    </div>
+  
 </body>
 </html>

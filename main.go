@@ -10,13 +10,47 @@ import (
 	"strings"
 )
 
+var (
+	favoriteWeapons  []Weapon
+	favoriteMonsters []Monster
+	favoriteObjets   []Objets
+	favoriteSkills   []Skills
+	favoriteEvents   []Evenements
+	favoriteDeco     []Decorations
+	favoriteCharms   []Charms
+	favoriteArmors   []Armor
+)
+
+type Favorites struct {
+	Weapons  []Weapon  // Liste des armes favorites
+	Monsters []Monster // Liste des monstres favoris
+	Objets   []Objets  // Liste des armes favorites
+	Skills   []Skills
+	Events   []Evenements
+	Deco     []Decorations
+	Charms   []Charms
+	Armors   []Armor
+}
+
+type FavoritesItems struct {
+	ID       int    `json:"id"`
+	Type     string `json:"type"`
+	Name     string `json:"name"`
+	Rarete   int    `json:"rarete"`
+	Category string `json:"category"`
+	// Autres champs nécessaires pour représenter un élément
+}
+
+var favoriteItems []FavoritesItems
+
 // Structure pour stocker les données des armes
 type Weapon struct {
-	ID     int    `json:"id"`
-	Name   string `json:"name"`
-	Type   string `json:"type"`
-	Rarity int    `json:"rarity"`
-	Attack struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Category string `json:"category"`
+	Type     string `json:"type"`
+	Rarity   int    `json:"rarity"`
+	Attack   struct {
 		Display int `json:"display"`
 		Raw     int `json:"raw"`
 	} `json:"attack"`
@@ -30,9 +64,21 @@ type Weapon struct {
 	} `json:"assets"`
 }
 
+type PageData struct {
+	Weapons  []Weapon
+	Monsters []Monster
+	Objets   []Objets
+	Skills   []Skills
+	Events   []Evenements
+	Deco     []Decorations
+	Charms   []Charms
+	Armors   []Armor
+}
+
 type Skills struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
+	Category    string `json:"category"`
 	Description string `json:"description"`
 	Rang        []struct {
 		Niveau      int    `json:"level"`
@@ -45,13 +91,15 @@ type Objets struct {
 	Name        string `json:"name"`
 	Rarete      int    `json:"rarity"`
 	Description string `json:"description"`
+	Category    string `json:"category"`
 }
 
 type Decorations struct {
-	ID     int    `json:"id"`
-	Name   string `json:"name"`
-	Rarete int    `json:"rarity"`
-	Skills []struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Category string `json:"category"`
+	Rarete   int    `json:"rarity"`
+	Skills   []struct {
 		Name        string `json:"skillName"`
 		Niveau      int    `json:"level"`
 		Description string `json:"description"`
@@ -59,9 +107,10 @@ type Decorations struct {
 }
 
 type Charms struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Rang []struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Category string `json:"category"`
+	Rang     []struct {
 		Niveau int `json:"level"`
 		Rarete int `json:"rarity"`
 		Skills []struct {
@@ -75,6 +124,7 @@ type Charms struct {
 type Armor struct {
 	ID          int            `json:"id"`
 	Name        string         `json:"name"`
+	Category    string         `json:"category"`
 	Type        string         `json:"type"`
 	Rarete      int            `json:"rarity"`
 	Rang        string         `json:"rank"`
@@ -99,6 +149,7 @@ type Armor struct {
 // Structure pour stocker les données des monstres
 type Monster struct {
 	ID          int    `json:"id"`
+	Category    string `json:"category"` // Type de monstre
 	Name        string `json:"name"`
 	Species     string `json:"species"`
 	Type        string `json:"type"`
@@ -124,6 +175,7 @@ type Monster struct {
 type Evenements struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
+	Category     string `json:"category"`
 	Type         string `json:"type"`
 	Rang         int    `json:"questRank"`
 	Description  string `json:"description"`
@@ -151,6 +203,105 @@ func fetchJSONData(url string, data interface{}) error {
 	return nil
 }
 
+func mainPageHandler(w http.ResponseWriter, r *http.Request) {
+	var weapons []Weapon
+	weaponsURL := "https://mhw-db.com/weapons"
+	err := fetchJSONData(weaponsURL, &weapons)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(weapons) == 0 {
+		log.Println("Aucune donnée n'a été reçue pour les armes.")
+	} else {
+		log.Println("Données reçues pour les armes:", weapons)
+	}
+
+	var armors []Armor
+	armorsURL := "https://mhw-db.com/armor"
+	errArmor := fetchJSONData(armorsURL, &armors)
+	if errArmor != nil {
+		log.Fatal(errArmor)
+	}
+	if len(armors) == 0 {
+		log.Println("Aucune donnée n'a été reçue pour les armes.")
+	} else {
+		log.Println("Données reçues pour les armes:", weapons)
+	}
+
+	var charms []Charms
+	charmsURL := "https://mhw-db.com/charms"
+	errcharms := fetchJSONData(charmsURL, &charms)
+	if errcharms != nil {
+		log.Fatal(errcharms)
+	}
+	var deco []Decorations
+	decoURL := "https://mhw-db.com/decorations"
+	errDeco := fetchJSONData(decoURL, &deco)
+	if errDeco != nil {
+		log.Fatal(errDeco)
+	}
+	var events []Evenements
+	eventsURL := "https://mhw-db.com/events"
+	errevents := fetchJSONData(eventsURL, &events)
+	if errevents != nil {
+		log.Fatal(errevents)
+	}
+	var items []Objets
+	itemsURL := "https://mhw-db.com/items"
+	errItems := fetchJSONData(itemsURL, &items)
+	if errItems != nil {
+		log.Fatal(errItems)
+	}
+	var monsters []Monster
+	monstersURL := "https://mhw-db.com/monsters"
+	errmonsters := fetchJSONData(monstersURL, &monsters)
+	if errmonsters != nil {
+		log.Fatal(errmonsters)
+	}
+	var skills []Skills
+	skillsURL := "https://mhw-db.com/skills"
+	errskills := fetchJSONData(skillsURL, &skills)
+	if errskills != nil {
+		log.Fatal(errskills)
+	}
+	// Autres traitements...
+
+	// Suppose que vous avez besoin de transmettre weapons et armors au modèle HTML
+	data := struct {
+		Weapons  []Weapon
+		Armors   []Armor
+		Charms   []Charms
+		Deco     []Decorations
+		Events   []Evenements
+		Items    []Objets
+		Skills   []Skills
+		Monsters []Monster
+	}{
+		Weapons:  weapons,
+		Armors:   armors,
+		Charms:   charms,
+		Deco:     deco,
+		Events:   events,
+		Items:    items,
+		Skills:   skills,
+		Monsters: monsters,
+	}
+	// Autres traitements...
+
+	// Charger le modèle HTML pour afficher les armes
+	t, errTemplate := template.ParseFiles("templates/search.html")
+	if errTemplate != nil {
+		log.Fatal(errTemplate)
+	}
+
+	// Rendre la page HTML avec les données récupérées
+	errExecute := t.Execute(w, data)
+	if errExecute != nil {
+		log.Fatal(errExecute)
+	}
+}
+
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	// Chargez le fichier HTML de la page d'accueil
 	t, err := template.ParseFiles("templates/index.html")
@@ -171,35 +322,36 @@ func skillsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Filtrer les compétences en fonction de la recherche
+
+	// Obtenir le paramètre de recherche de la requête
 	query := r.URL.Query().Get("q")
-	if query != "" {
-		var filteredSkills []Skills
-		for _, skill := range skills {
-			if strings.Contains(strings.ToLower(skill.Name), strings.ToLower(query)) {
-				filteredSkills = append(filteredSkills, skill)
-			}
+
+	// Filtrer les compétences en fonction de la recherche
+	var filteredSkills []Skills
+	for _, skill := range skills {
+		if query == "" || strings.Contains(strings.ToLower(skill.Name), strings.ToLower(query)) {
+			filteredSkills = append(filteredSkills, skill)
 		}
-		skills = filteredSkills
 	}
+
 	pageStr := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page < 1 {
 		page = 1 // Si le numéro de page est invalide ou non défini, affichez la première page par défaut
 	}
 
-	// Calculez l'indice de début et de fin pour paginer les armes
+	// Calculez l'indice de début et de fin pour paginer les compétences
 	startIndex := (page - 1) * 10
 	endIndex := startIndex + 10
-	if endIndex > len(skills) {
-		endIndex = len(skills)
+	if endIndex > len(filteredSkills) {
+		endIndex = len(filteredSkills)
 	}
 
-	// Sélectionnez les armes à afficher sur cette page
-	paginatedSkills := skills[startIndex:endIndex]
+	// Sélectionnez les compétences à afficher sur cette page
+	paginatedSkills := filteredSkills[startIndex:endIndex]
 
 	// Préparez les données nécessaires pour la pagination
-	hasNextPage := endIndex < len(skills)
+	hasNextPage := endIndex < len(filteredSkills)
 	hasPreviousPage := page > 1
 	nextPage := page + 1
 	previousPage := page - 1
@@ -211,12 +363,14 @@ func skillsHandler(w http.ResponseWriter, r *http.Request) {
 		HasPreviousPage bool
 		NextPage        int
 		PreviousPage    int
+		Query           string
 	}{
 		Skills:          paginatedSkills,
 		HasNextPage:     hasNextPage,
 		HasPreviousPage: hasPreviousPage,
 		NextPage:        nextPage,
 		PreviousPage:    previousPage,
+		Query:           query,
 	}
 
 	t, err := template.ParseFiles("templates/skills.html")
@@ -228,7 +382,6 @@ func skillsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 }
-
 func skillDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	// Extract the weapon ID from the query parameters
 	skillID := r.URL.Query().Get("id")
@@ -271,35 +424,39 @@ func itemsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Filtrer les objets en fonction de la recherche
-	query := r.URL.Query().Get("q")
-	if query != "" {
-		var filteredItems []Objets
-		for _, item := range items {
-			if strings.Contains(strings.ToLower(item.Name), strings.ToLower(query)) {
-				filteredItems = append(filteredItems, item)
-			}
+
+	// Obtenir les paramètres de filtrage de la requête
+	rarityFilter := r.URL.Query().Get("rarityFilter")
+	searchQuery := r.URL.Query().Get("q")
+
+	// Filtrer les objets en fonction des critères de filtrage
+	var filteredItems []Objets
+	for _, item := range items {
+		// Vérifiez si l'objet correspond aux critères de filtrage
+		if (rarityFilter == "" || strconv.Itoa(item.Rarete) == rarityFilter) &&
+			(searchQuery == "" || strings.Contains(strings.ToLower(item.Name), strings.ToLower(searchQuery))) {
+			filteredItems = append(filteredItems, item)
 		}
-		items = filteredItems
 	}
+
 	pageStr := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page < 1 {
 		page = 1 // Si le numéro de page est invalide ou non défini, affichez la première page par défaut
 	}
 
-	// Calculez l'indice de début et de fin pour paginer les armes
+	// Calculez l'indice de début et de fin pour paginer les objets
 	startIndex := (page - 1) * 10
 	endIndex := startIndex + 10
-	if endIndex > len(items) {
-		endIndex = len(items)
+	if endIndex > len(filteredItems) {
+		endIndex = len(filteredItems)
 	}
 
-	// Sélectionnez les armes à afficher sur cette page
-	paginatedItems := items[startIndex:endIndex]
+	// Sélectionnez les objets à afficher sur cette page
+	paginatedItems := filteredItems[startIndex:endIndex]
 
 	// Préparez les données nécessaires pour la pagination
-	hasNextPage := endIndex < len(items)
+	hasNextPage := endIndex < len(filteredItems)
 	hasPreviousPage := page > 1
 	nextPage := page + 1
 	previousPage := page - 1
@@ -311,12 +468,16 @@ func itemsHandler(w http.ResponseWriter, r *http.Request) {
 		HasPreviousPage bool
 		NextPage        int
 		PreviousPage    int
+		Query           string
+		RarityFilter    string
 	}{
 		Items:           paginatedItems,
 		HasNextPage:     hasNextPage,
 		HasPreviousPage: hasPreviousPage,
 		NextPage:        nextPage,
 		PreviousPage:    previousPage,
+		Query:           searchQuery,
+		RarityFilter:    rarityFilter,
 	}
 
 	t, err := template.ParseFiles("templates/items.html")
@@ -328,7 +489,6 @@ func itemsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 }
-
 func itemDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	// Extract the weapon ID from the query parameters
 	itemID := r.URL.Query().Get("id")
@@ -371,35 +531,40 @@ func eventsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Filtrer les événements en fonction de la recherche
+	// Obtenir les paramètres de filtrage de la requête
+	typeFilter := r.URL.Query().Get("typeFilter")
+	rankFilter := r.URL.Query().Get("rankFilter")
 	query := r.URL.Query().Get("q")
-	if query != "" {
-		var filteredEvents []Evenements
-		for _, event := range events {
-			if strings.Contains(strings.ToLower(event.Name), strings.ToLower(query)) {
-				filteredEvents = append(filteredEvents, event)
-			}
+
+	// Filtrer les événements en fonction des critères de filtrage
+	var filteredEvents []Evenements
+	for _, event := range events {
+		// Vérifiez si l'événement correspond aux critères de filtrage
+		if (typeFilter == "" || event.Type == typeFilter) &&
+			(rankFilter == "" || strconv.Itoa(event.Rang) == rankFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(event.Name), strings.ToLower(query))) {
+			filteredEvents = append(filteredEvents, event)
 		}
-		events = filteredEvents
 	}
+
 	pageStr := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page < 1 {
 		page = 1 // Si le numéro de page est invalide ou non défini, affichez la première page par défaut
 	}
 
-	// Calculez l'indice de début et de fin pour paginer les armes
+	// Calculez l'indice de début et de fin pour paginer les événements
 	startIndex := (page - 1) * 10
 	endIndex := startIndex + 10
-	if endIndex > len(events) {
-		endIndex = len(events)
+	if endIndex > len(filteredEvents) {
+		endIndex = len(filteredEvents)
 	}
 
-	// Sélectionnez les armes à afficher sur cette page
-	paginatedEvents := events[startIndex:endIndex]
+	// Sélectionnez les événements à afficher sur cette page
+	paginatedEvents := filteredEvents[startIndex:endIndex]
 
 	// Préparez les données nécessaires pour la pagination
-	hasNextPage := endIndex < len(events)
+	hasNextPage := endIndex < len(filteredEvents)
 	hasPreviousPage := page > 1
 	nextPage := page + 1
 	previousPage := page - 1
@@ -411,12 +576,18 @@ func eventsHandler(w http.ResponseWriter, r *http.Request) {
 		HasPreviousPage bool
 		NextPage        int
 		PreviousPage    int
+		Query           string
+		TypeFilter      string
+		RankFilter      string
 	}{
 		Events:          paginatedEvents,
 		HasNextPage:     hasNextPage,
 		HasPreviousPage: hasPreviousPage,
 		NextPage:        nextPage,
 		PreviousPage:    previousPage,
+		Query:           query,
+		TypeFilter:      typeFilter,
+		RankFilter:      rankFilter,
 	}
 
 	t, err := template.ParseFiles("templates/events.html")
@@ -471,35 +642,38 @@ func decoHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Filtrer les décorations en fonction de la recherche
+	// Obtenir les paramètres de filtrage de la requête
+	rarityFilter := r.URL.Query().Get("rarityFilter")
 	query := r.URL.Query().Get("q")
-	if query != "" {
-		var filteredDeco []Decorations
-		for _, decoration := range deco {
-			if strings.Contains(strings.ToLower(decoration.Name), strings.ToLower(query)) {
-				filteredDeco = append(filteredDeco, decoration)
-			}
+
+	// Filtrer les décorations en fonction des critères de filtrage
+	var filteredDeco []Decorations
+	for _, decoration := range deco {
+		// Vérifiez si la décoration correspond aux critères de filtrage
+		if (rarityFilter == "" || strconv.Itoa(decoration.Rarete) == rarityFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(decoration.Name), strings.ToLower(query))) {
+			filteredDeco = append(filteredDeco, decoration)
 		}
-		deco = filteredDeco
 	}
+
 	pageStr := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page < 1 {
 		page = 1 // Si le numéro de page est invalide ou non défini, affichez la première page par défaut
 	}
 
-	// Calculez l'indice de début et de fin pour paginer les armes
+	// Calculez l'indice de début et de fin pour paginer les décorations
 	startIndex := (page - 1) * 10
 	endIndex := startIndex + 10
-	if endIndex > len(deco) {
-		endIndex = len(deco)
+	if endIndex > len(filteredDeco) {
+		endIndex = len(filteredDeco)
 	}
 
-	// Sélectionnez les armes à afficher sur cette page
-	paginatedDeco := deco[startIndex:endIndex]
+	// Sélectionnez les décorations à afficher sur cette page
+	paginatedDeco := filteredDeco[startIndex:endIndex]
 
 	// Préparez les données nécessaires pour la pagination
-	hasNextPage := endIndex < len(deco)
+	hasNextPage := endIndex < len(filteredDeco)
 	hasPreviousPage := page > 1
 	nextPage := page + 1
 	previousPage := page - 1
@@ -511,12 +685,16 @@ func decoHandler(w http.ResponseWriter, r *http.Request) {
 		HasPreviousPage bool
 		NextPage        int
 		PreviousPage    int
+		RarityFilter    string
+		Query           string
 	}{
 		Decorations:     paginatedDeco,
 		HasNextPage:     hasNextPage,
 		HasPreviousPage: hasPreviousPage,
 		NextPage:        nextPage,
 		PreviousPage:    previousPage,
+		RarityFilter:    rarityFilter,
+		Query:           query,
 	}
 
 	t, err := template.ParseFiles("templates/décorations.html")
@@ -528,6 +706,7 @@ func decoHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 }
+
 func decoDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	// Extract the weapon ID from the query parameters
 	decoID := r.URL.Query().Get("id")
@@ -562,7 +741,6 @@ func decoDetailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
 func charmsHandler(w http.ResponseWriter, r *http.Request) {
 	var charms []Charms
 	charmsURL := "https://mhw-db.com/charms"
@@ -570,35 +748,36 @@ func charmsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Filtrer les charms en fonction de la recherche
+
+	// Obtenir le paramètre de recherche de la requête
 	query := r.URL.Query().Get("q")
-	if query != "" {
-		var filteredCharms []Charms
-		for _, charm := range charms {
-			if strings.Contains(strings.ToLower(charm.Name), strings.ToLower(query)) {
-				filteredCharms = append(filteredCharms, charm)
-			}
+
+	// Filtrer les charms en fonction de la recherche
+	var filteredCharms []Charms
+	for _, charm := range charms {
+		if query == "" || strings.Contains(strings.ToLower(charm.Name), strings.ToLower(query)) {
+			filteredCharms = append(filteredCharms, charm)
 		}
-		charms = filteredCharms
 	}
+
 	pageStr := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page < 1 {
 		page = 1 // Si le numéro de page est invalide ou non défini, affichez la première page par défaut
 	}
 
-	// Calculez l'indice de début et de fin pour paginer les armes
+	// Calculez l'indice de début et de fin pour paginer les charms
 	startIndex := (page - 1) * 10
 	endIndex := startIndex + 10
-	if endIndex > len(charms) {
-		endIndex = len(charms)
+	if endIndex > len(filteredCharms) {
+		endIndex = len(filteredCharms)
 	}
 
-	// Sélectionnez les armes à afficher sur cette page
-	paginatedCharms := charms[startIndex:endIndex]
+	// Sélectionnez les charms à afficher sur cette page
+	paginatedCharms := filteredCharms[startIndex:endIndex]
 
 	// Préparez les données nécessaires pour la pagination
-	hasNextPage := endIndex < len(charms)
+	hasNextPage := endIndex < len(filteredCharms)
 	hasPreviousPage := page > 1
 	nextPage := page + 1
 	previousPage := page - 1
@@ -610,12 +789,14 @@ func charmsHandler(w http.ResponseWriter, r *http.Request) {
 		HasPreviousPage bool
 		NextPage        int
 		PreviousPage    int
+		Query           string
 	}{
 		Charms:          paginatedCharms,
 		HasNextPage:     hasNextPage,
 		HasPreviousPage: hasPreviousPage,
 		NextPage:        nextPage,
 		PreviousPage:    previousPage,
+		Query:           query,
 	}
 
 	t, err := template.ParseFiles("templates/charms.html")
@@ -713,19 +894,25 @@ func weaponsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Chargez le modèle HTML avec les données paginées et les informations de pagination
 	data := struct {
-		Weapons         []Weapon
-		HasNextPage     bool
-		HasPreviousPage bool
-		NextPage        int
-		PreviousPage    int
-		Query           string
+		Weapons           []Weapon
+		HasNextPage       bool
+		HasPreviousPage   bool
+		NextPage          int
+		PreviousPage      int
+		Query             string
+		RarityFilter      string
+		ElementFilter     string
+		DamagesTypeFilter string
 	}{
-		Weapons:         paginatedWeapons,
-		HasNextPage:     hasNextPage,
-		HasPreviousPage: hasPreviousPage,
-		NextPage:        nextPage,
-		PreviousPage:    previousPage,
-		Query:           searchQuery,
+		Weapons:           paginatedWeapons,
+		HasNextPage:       hasNextPage,
+		HasPreviousPage:   hasPreviousPage,
+		NextPage:          nextPage,
+		PreviousPage:      previousPage,
+		Query:             searchQuery,
+		RarityFilter:      rarityFilter,
+		ElementFilter:     elementFilter,
+		DamagesTypeFilter: damageTypeFilter,
 	}
 
 	t, err := template.ParseFiles("templates/weapons.html")
@@ -794,35 +981,42 @@ func armorsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	// Filtrer les armures en fonction de la recherche
+	// Obtenir les paramètres de filtrage de la requête
+	typeFilter := r.URL.Query().Get("typeFilter")
+	rankFilter := r.URL.Query().Get("rankFilter")
+	rarityFilter := r.URL.Query().Get("rarityFilter")
 	query := r.URL.Query().Get("q")
-	if query != "" {
-		var filteredArmors []Armor
-		for _, armor := range armors {
-			if strings.Contains(strings.ToLower(armor.Name), strings.ToLower(query)) {
-				filteredArmors = append(filteredArmors, armor)
-			}
+
+	// Filtrer les armures en fonction des critères de filtrage
+	var filteredArmors []Armor
+	for _, armor := range armors {
+		// Vérifiez si l'armure correspond aux critères de filtrage
+		if (typeFilter == "" || armor.Type == typeFilter) &&
+			(rankFilter == "" || armor.Rang == rankFilter) &&
+			(rarityFilter == "" || strconv.Itoa(armor.Rarete) == rarityFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(armor.Name), strings.ToLower(query))) {
+			filteredArmors = append(filteredArmors, armor)
 		}
-		armors = filteredArmors
 	}
+
 	pageStr := r.URL.Query().Get("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page < 1 {
 		page = 1 // Si le numéro de page est invalide ou non défini, affichez la première page par défaut
 	}
 
-	// Calculez l'indice de début et de fin pour paginer les armes
+	// Calculez l'indice de début et de fin pour paginer les armures
 	startIndex := (page - 1) * 10
 	endIndex := startIndex + 10
-	if endIndex > len(armors) {
-		endIndex = len(armors)
+	if endIndex > len(filteredArmors) {
+		endIndex = len(filteredArmors)
 	}
 
-	// Sélectionnez les armes à afficher sur cette page
-	paginatedArmors := armors[startIndex:endIndex]
+	// Sélectionnez les armures à afficher sur cette page
+	paginatedArmors := filteredArmors[startIndex:endIndex]
 
 	// Préparez les données nécessaires pour la pagination
-	hasNextPage := endIndex < len(armors)
+	hasNextPage := endIndex < len(filteredArmors)
 	hasPreviousPage := page > 1
 	nextPage := page + 1
 	previousPage := page - 1
@@ -834,12 +1028,20 @@ func armorsHandler(w http.ResponseWriter, r *http.Request) {
 		HasPreviousPage bool
 		NextPage        int
 		PreviousPage    int
+		TypeFilter      string
+		RankFilter      string
+		RarityFilter    string
+		Query           string
 	}{
 		Armors:          paginatedArmors,
 		HasNextPage:     hasNextPage,
 		HasPreviousPage: hasPreviousPage,
 		NextPage:        nextPage,
 		PreviousPage:    previousPage,
+		TypeFilter:      typeFilter,
+		RankFilter:      rankFilter,
+		RarityFilter:    rarityFilter,
+		Query:           query,
 	}
 
 	t, err := template.ParseFiles("templates/armors.html")
@@ -851,6 +1053,7 @@ func armorsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 }
+
 func armorDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	// Récupérer l'ID de l'armure à partir des paramètres de requête
 	armorID := r.URL.Query().Get("id")
@@ -901,40 +1104,20 @@ func monstersHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	// Filtrer les monstres en fonction de la taille
+	// Obtenir les paramètres de filtrage de la requête
 	sizeFilter := r.URL.Query().Get("sizeFilter")
-	if sizeFilter != "" {
-		var filteredMonsters []Monster
-		for _, monster := range monsters {
-			if monster.Size == sizeFilter {
-				filteredMonsters = append(filteredMonsters, monster)
-			}
-		}
-		monsters = filteredMonsters
-	}
-
-	// Filtrer les monstres en fonction des résistances
 	resistanceFilter := r.URL.Query().Get("resistanceFilter")
-	if resistanceFilter != "" {
-		var filteredMonsters []Monster
-		for _, monster := range monsters {
-			if containsResistance(monster.Resistances, resistanceFilter) {
-				filteredMonsters = append(filteredMonsters, monster)
-			}
-		}
-		monsters = filteredMonsters
-	}
+	searchQuery := r.URL.Query().Get("q")
 
-	// Filtrer les monstres en fonction de la recherche
-	query := r.URL.Query().Get("q")
-	if query != "" {
-		var filteredMonsters []Monster
-		for _, monster := range monsters {
-			if strings.Contains(strings.ToLower(monster.Name), strings.ToLower(query)) {
-				filteredMonsters = append(filteredMonsters, monster)
-			}
+	// Filtrer les monstres en fonction des critères de filtrage
+	var filteredMonsters []Monster
+	for _, monster := range monsters {
+		// Vérifiez si le monstre correspond aux critères de filtrage
+		if (sizeFilter == "" || monster.Type == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(monster.Resistances, resistanceFilter)) &&
+			(searchQuery == "" || strings.Contains(strings.ToLower(monster.Name), strings.ToLower(searchQuery))) {
+			filteredMonsters = append(filteredMonsters, monster)
 		}
-		monsters = filteredMonsters
 	}
 
 	pageStr := r.URL.Query().Get("page")
@@ -946,32 +1129,38 @@ func monstersHandler(w http.ResponseWriter, r *http.Request) {
 	// Calculez l'indice de début et de fin pour paginer les monstres
 	startIndex := (page - 1) * 10
 	endIndex := startIndex + 10
-	if endIndex > len(monsters) {
-		endIndex = len(monsters)
+	if endIndex > len(filteredMonsters) {
+		endIndex = len(filteredMonsters)
 	}
 
 	// Sélectionnez les monstres à afficher sur cette page
-	paginatedMonsters := monsters[startIndex:endIndex]
+	paginatedMonsters := filteredMonsters[startIndex:endIndex]
 
 	// Préparez les données nécessaires pour la pagination
-	hasNextPage := endIndex < len(monsters)
+	hasNextPage := endIndex < len(filteredMonsters)
 	hasPreviousPage := page > 1
 	nextPage := page + 1
 	previousPage := page - 1
 
 	// Chargez le modèle HTML avec les données paginées et les informations de pagination
 	data := struct {
-		Monsters        []Monster
-		HasNextPage     bool
-		HasPreviousPage bool
-		NextPage        int
-		PreviousPage    int
+		Monsters         []Monster
+		HasNextPage      bool
+		HasPreviousPage  bool
+		NextPage         int
+		PreviousPage     int
+		Query            string
+		SizeFilter       string
+		ResistanceFilter string
 	}{
-		Monsters:        paginatedMonsters,
-		HasNextPage:     hasNextPage,
-		HasPreviousPage: hasPreviousPage,
-		NextPage:        nextPage,
-		PreviousPage:    previousPage,
+		Monsters:         paginatedMonsters,
+		HasNextPage:      hasNextPage,
+		HasPreviousPage:  hasPreviousPage,
+		NextPage:         nextPage,
+		PreviousPage:     previousPage,
+		Query:            searchQuery,
+		SizeFilter:       sizeFilter,
+		ResistanceFilter: resistanceFilter,
 	}
 
 	t, err := template.ParseFiles("templates/monsters.html")
@@ -984,8 +1173,9 @@ func monstersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Helper function to check if a monster has a specific resistance
-func containsResistance(resistances []Resistance, resistanceFilter string) bool {
+func containsResistance(resistances []struct {
+	Element string "json:\"element\""
+}, resistanceFilter string) bool {
 	for _, resistance := range resistances {
 		if resistance.Element == resistanceFilter {
 			return true
@@ -993,72 +1183,6 @@ func containsResistance(resistances []Resistance, resistanceFilter string) bool 
 	}
 	return false
 }
-
-// func monstersHandler(w http.ResponseWriter, r *http.Request) {
-// 	var monsters []Monster
-// 	monstersURL := "https://mhw-db.com/monsters"
-// 	err := fetchJSONData(monstersURL, &monsters)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	// Filtrer les monstres en fonction de la recherche
-// 	query := r.URL.Query().Get("q")
-// 	if query != "" {
-// 		var filteredMonsters []Monster
-// 		for _, monster := range monsters {
-// 			if strings.Contains(strings.ToLower(monster.Name), strings.ToLower(query)) {
-// 				filteredMonsters = append(filteredMonsters, monster)
-// 			}
-// 		}
-// 		monsters = filteredMonsters
-// 	}
-
-// 	pageStr := r.URL.Query().Get("page")
-// 	page, err := strconv.Atoi(pageStr)
-// 	if err != nil || page < 1 {
-// 		page = 1 // Si le numéro de page est invalide ou non défini, affichez la première page par défaut
-// 	}
-
-// 	// Calculez l'indice de début et de fin pour paginer les armes
-// 	startIndex := (page - 1) * 10
-// 	endIndex := startIndex + 10
-// 	if endIndex > len(monsters) {
-// 		endIndex = len(monsters)
-// 	}
-
-// 	// Sélectionnez les armes à afficher sur cette page
-// 	paginatedMonsters := monsters[startIndex:endIndex]
-
-// 	// Préparez les données nécessaires pour la pagination
-// 	hasNextPage := endIndex < len(monsters)
-// 	hasPreviousPage := page > 1
-// 	nextPage := page + 1
-// 	previousPage := page - 1
-
-// 	// Chargez le modèle HTML avec les données paginées et les informations de pagination
-// 	data := struct {
-// 		Monsters        []Monster
-// 		HasNextPage     bool
-// 		HasPreviousPage bool
-// 		NextPage        int
-// 		PreviousPage    int
-// 	}{
-// 		Monsters:        paginatedMonsters,
-// 		HasNextPage:     hasNextPage,
-// 		HasPreviousPage: hasPreviousPage,
-// 		NextPage:        nextPage,
-// 		PreviousPage:    previousPage,
-// 	}
-
-// 	t, err := template.ParseFiles("templates/monsters.html")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	err = t.Execute(w, data)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// }
 
 func monsterDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	// Extract the weapon ID from the query parameters
@@ -1094,11 +1218,254 @@ func monsterDetailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
+	itemCate := r.URL.Query().Get("category")
+	itemID := r.URL.Query().Get("id")
+	itemName := r.URL.Query().Get("name")
+	itemType := r.URL.Query().Get("type")
+	itemRarity := r.URL.Query().Get("rarity")
+	itemImage := r.URL.Query().Get("image")
+	itemImageH := r.URL.Query().Get("imageMale")
+	itemImageF := r.URL.Query().Get("imageFemale")
+	itemSpecies := r.URL.Query().Get("species")
+
+	// Vérifiez le type d'élément et agissez en conséquence
+	switch itemCate {
+	case "weapons":
+		// Ajoutez l'arme aux favoris
+		var weapon Weapon
+		weapon.ID, _ = strconv.Atoi(itemID)
+		weapon.Name = itemName
+		weapon.Type = itemType
+		weapon.Rarity, _ = strconv.Atoi(itemRarity)
+		weapon.Assets.Image = itemImage
+		// Ajoutez d'autres détails de l'arme si nécessaire
+		// ...
+
+		// Ajoutez l'arme aux favoris
+		weapons := Weapon{
+			Category: "weapons",
+			ID:       weapon.ID,
+			Name:     weapon.Name,
+			Type:     weapon.Type,
+			Rarity:   weapon.Rarity,
+			Assets: struct {
+				Image string `json:"image"`
+			}{
+				Image: itemImage,
+			},
+			// Ajoutez d'autres détails de l'arme si nécessaire
+			// ...
+		}
+		// Ajoutez l'arme aux favoris
+		favoriteWeapons = append(favoriteWeapons, weapons)
+	case "monsters":
+		// Ajoutez le monstre aux favoris
+		var monster Monster
+		monster.ID, _ = strconv.Atoi(itemID)
+		monster.Name = itemName
+		monster.Species = itemSpecies
+		monster.Type = itemType
+		// Ajoutez d'autres détails du monstre si nécessaire
+		// ...
+
+		// Ajoutez le monstre aux favoris
+		monsters := Monster{
+			Category: "monsters",
+			ID:       monster.ID,
+			Name:     monster.Name,
+			Type:     monster.Type,
+			Species:  monster.Species,
+			// Ajoutez d'autres détails du monstre si nécessaire
+			// ...
+		}
+		// Ajoutez le monstre aux favoris
+		favoriteMonsters = append(favoriteMonsters, monsters)
+	case "items":
+		// Ajoutez le monstre aux favoris
+		var objet Objets
+		objet.ID, _ = strconv.Atoi(itemID)
+		objet.Name = itemName
+		objet.Rarete, _ = strconv.Atoi(itemRarity)
+
+		// Ajoutez d'autres détails du monstre si nécessaire
+		// ...
+
+		// Ajoutez le monstre aux favoris
+		objets := Objets{
+			Category: "items",
+			ID:       objet.ID,
+			Name:     objet.Name,
+			Rarete:   objet.Rarete,
+			// Ajoutez d'autres détails du monstre si nécessaire
+			// ...
+		}
+		// Ajoutez le monstre aux favoris
+		favoriteObjets = append(favoriteObjets, objets)
+	case "skills":
+		var skill Skills
+		skill.ID, _ = strconv.Atoi(itemID)
+		skill.Name = itemName
+
+		// Ajoutez d'autres détails de l'arme si nécessaire
+		// ...
+
+		// Ajoutez l'arme aux favoris
+		skills := Skills{
+			Category: "skills",
+			ID:       skill.ID,
+			Name:     skill.Name,
+
+			// Ajoutez d'autres détails de l'arme si nécessaire
+			// ...
+		}
+		// Ajoutez l'arme aux favoris
+		favoriteSkills = append(favoriteSkills, skills)
+	case "events":
+		var event Evenements
+		event.ID, _ = strconv.Atoi(itemID)
+		event.Name = itemName
+		event.Type = itemType
+
+		// Ajoutez d'autres détails de l'arme si nécessaire
+		// ...
+
+		// Ajoutez l'arme aux favoris
+		events := Evenements{
+			Category: "events",
+			ID:       event.ID,
+			Name:     event.Name,
+			Type:     event.Type,
+
+			// Ajoutez d'autres détails de l'arme si nécessaire
+			// ...
+		}
+		// Ajoutez l'arme aux favoris
+		favoriteEvents = append(favoriteEvents, events)
+	case "deco":
+		var deco Decorations
+		deco.ID, _ = strconv.Atoi(itemID)
+		deco.Name = itemName
+		deco.Rarete, _ = strconv.Atoi(itemRarity)
+
+		// Ajoutez d'autres détails de l'arme si nécessaire
+		// ...
+
+		// Ajoutez l'arme aux favoris
+		decos := Decorations{
+			Category: "deco",
+			ID:       deco.ID,
+			Name:     deco.Name,
+			Rarete:   deco.Rarete,
+
+			// Ajoutez d'autres détails de l'arme si nécessaire
+			// ...
+		}
+		// Ajoutez l'arme aux favoris
+		favoriteDeco = append(favoriteDeco, decos)
+	case "charms":
+		var charm Charms
+		charm.ID, _ = strconv.Atoi(itemID)
+		charm.Name = itemName
+
+		// Ajoutez d'autres détails de l'arme si nécessaire
+		// ...
+
+		// Ajoutez l'arme aux favoris
+		charms := Charms{
+			Category: "charms",
+			ID:       charm.ID,
+			Name:     charm.Name,
+
+			// Ajoutez d'autres détails de l'arme si nécessaire
+			// ...
+		}
+		// Ajoutez l'arme aux favoris
+		favoriteCharms = append(favoriteCharms, charms)
+	case "armors":
+		// Ajoutez l'arme aux favoris
+		var armor Armor
+		armor.ID, _ = strconv.Atoi(itemID)
+		armor.Name = itemName
+		armor.Type = itemType
+		armor.Rarete, _ = strconv.Atoi(itemRarity)
+		armor.Assets.ImageH = itemImageH
+		armor.Assets.ImageF = itemImageF
+		// Ajoutez d'autres détails de l'arme si nécessaire
+		// ...
+
+		// Ajoutez l'arme aux favoris
+		armors := Armor{
+			Category: "armors",
+			ID:       armor.ID,
+			Name:     armor.Name,
+			Type:     armor.Type,
+			Rarete:   armor.Rarete,
+			Assets: struct {
+				ImageH string `json:"imageMale"`
+				ImageF string `json:"imageFemale"`
+			}{
+				ImageH: itemImageH,
+				ImageF: itemImageF,
+			},
+			// Ajoutez d'autres détails de l'arme si nécessaire
+			// ...
+		}
+		// Ajoutez l'arme aux favoris
+		favoriteArmors = append(favoriteArmors, armors)
+
+	default:
+		// Type d'élément non pris en charge
+		http.Error(w, "Unsupported item type", http.StatusBadRequest)
+		return
+	}
+
+	// Redirigez l'utilisateur vers la page précédente
+	http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
+}
+
+func favoritesHandler(w http.ResponseWriter, r *http.Request) {
+	// Chargez le modèle HTML pour afficher les favoris
+	t, err := template.ParseFiles("templates/favorites.html")
+	if err != nil {
+		http.Error(w, "Failed to parse template", http.StatusInternalServerError)
+		log.Println("Failed to parse template:", err)
+		return
+	}
+	fmt.Println("Favorite items:", favoriteItems)
+	// Préparez les données des favoris pour le rendu dans le modèle
+	data := struct {
+		FavoriteItems Favorites
+	}{
+		FavoriteItems: Favorites{
+			Weapons:  favoriteWeapons,
+			Monsters: favoriteMonsters,
+			Skills:   favoriteSkills,
+			Objets:   favoriteObjets,
+			Events:   favoriteEvents,
+			Deco:     favoriteDeco,
+			Charms:   favoriteCharms,
+			Armors:   favoriteArmors,
+		},
+	}
+
+	// Rendez le modèle HTML avec les données des favoris
+	err = t.Execute(w, data)
+	if err != nil {
+		http.Error(w, "Failed to render template", http.StatusInternalServerError)
+		log.Println("Failed to render template:", err)
+		return
+	}
+}
+
 func main() {
 	// Serveur HTTP
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	http.HandleFunc("/", indexHandler)
+
+	http.HandleFunc("/search", mainPageHandler)
 
 	http.HandleFunc("/skills", skillsHandler)
 	http.HandleFunc("/skill-details", skillDetailsHandler)
@@ -1124,6 +1491,8 @@ func main() {
 	http.HandleFunc("/monsters", monstersHandler)
 	http.HandleFunc("/monster-details", monsterDetailsHandler)
 
+	http.HandleFunc("/favorites", favoritesHandler)
+	http.HandleFunc("/add-favorite", addToFavoritesHandler)
 	log.Println("Serveur en écoute sur le port 8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

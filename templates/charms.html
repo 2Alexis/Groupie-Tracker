@@ -13,8 +13,11 @@
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
-    <input type="text" id="searchInput" onkeyup="searchCharms()" placeholder="Rechercher par nom de charmes..." style="margin-bottom: 10px;">
-   
+<form action ="/charms" method="GET">
+    <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
+    <button type="submit">OK</button>
+</form>
+    
     <table class = "category" border="1" id="charmsTable">
         <tr>
             <th>Name</th>
@@ -36,38 +39,25 @@
                     {{end}}
                 {{end}}
             </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="charms">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+
+             
+
+                <button type="submit">Add to Favorites</button>
+            </form></td>
         </tr>
         {{end}}
     </table>
     {{if .HasPreviousPage}}
-    <a href="/charms?page={{.PreviousPage}}">Page précédente</a>
-{{end}}
-
-{{if .HasNextPage}}
-    <a href="/charms?page={{.NextPage}}">Page suivante</a>
-{{end}}
-    <script>
-        function searchCharms() {
-            // Récupérer la valeur saisie dans le champ de recherche
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("charmsTable");
-            tr = table.getElementsByTagName("tr");
-
-            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
+    <a href="/charms?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
+    {{end}}
+    
+    {{if .HasNextPage}}
+    <a href="/charms?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
+    {{end}}
+  
 </body>
 </html>

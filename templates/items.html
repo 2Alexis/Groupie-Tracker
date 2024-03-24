@@ -13,10 +13,10 @@
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
-    <input type="text" id="searchInput" onkeyup="searchItems()" placeholder="Rechercher par nom d'objet..." style="margin-bottom: 10px;">
-   
+    <form action="/items" method="GET">
+        
     <label for="rarityFilter">Filtrer par rareté:</label>
-<select id="rarityFilter" onchange="filterItems()">
+<select name="rarityFilter" >
     <option value="">Toutes les raretés</option>
     <option value="1">1</option>
     <option value="2">2</option>
@@ -33,12 +33,15 @@
    
     <!-- Ajoutez d'autres options selon vos besoins -->
 </select>
-
+<input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
+<button type="submit">OK</button>
+</form>
     <table class = "category" id="itemsTable">
         <tr>
             <th>Name</th>
             <th>Rarity</th>
             <th>Description</th>
+            <th>favoris</th>
         </tr>
         {{range .Items}}
         <tr>
@@ -47,58 +50,24 @@
             
             <td>{{.Rarete}}</td>
             <td>{{.Description}}</td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="items">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+                <button type="submit">Add to Favorites</button>
+            </form></td>
         </tr>
         {{end}}
     </table>
     {{if .HasPreviousPage}}
-    <a href="/items?page={{.PreviousPage}}">Page précédente</a>
-{{end}}
+    <a href="/items?page={{.PreviousPage}}&rarityFilter={{.RarityFilter}}&q={{.Query}}">Page précédente</a>
+    {{end}}
+    
+    {{if .HasNextPage}}
+    <a href="/items?page={{.NextPage}}&rarityFilter={{.RarityFilter}}&q={{.Query}}">Page suivante</a>
+    {{end}}
 
-{{if .HasNextPage}}
-    <a href="/items?page={{.NextPage}}">Page suivante</a>
-{{end}}
-    <script>
-        function searchItems() {
-            // Récupérer la valeur saisie dans le champ de recherche
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("itemsTable");
-            tr = table.getElementsByTagName("tr");
-
-            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        function filterItems() {
-            var rarityFilter = document.getElementById("rarityFilter").value;
-        
-            var table = document.getElementById("itemsTable");
-            var rows = table.getElementsByTagName("tr");
-        
-            for (var i = 1; i < rows.length; i++) { // Commence à l'index 1 pour éviter l'en-tête
-                var rarity = rows[i].getElementsByTagName("td")[1].textContent;
-        
-                // Appliquer le filtre
-                if (rarityFilter === "" || rarity === rarityFilter) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-        
-        
-    </script>
+   
 </body>
 </html>

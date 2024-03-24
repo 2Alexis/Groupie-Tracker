@@ -1,0 +1,156 @@
+
+
+
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.link {
+    color: #007bff; /* Couleur du lien */
+    text-decoration: none; /* Supprime le soulignement par défaut du lien */
+   
+    transition: color 0.3s; /* Ajoute une transition fluide pour le changement de couleur */
+}
+
+.link:hover {
+    color: #0056b3; /* Change la couleur lors du survol */
+}
+/* Styles pour l'en-tête */
+.header {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: #777;
+}
+
+.logo-img {
+    width: 100px; /* Ajustez la taille selon vos besoins */
+}
+
+.equipimg {
+    width: 100px;
+}
+
+/* Styles pour la section de filtrage */
+.filter-section {
+    margin-top: 20px;
+    text-align: center;
+   border-top: #777;
+}
+
+.filter-label {
+    margin-right: 10px;
+}
+
+.filter-select {
+    margin-right: 20px;
+}
+select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+/* Style pour la table des armes */
+table {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+input[type="text"] {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.search-input {
+    margin-right: 10px;
+   
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
+.search-btn {
+    padding: 5px 10px;
+    background-color: #007bff; /* Couleur du bouton */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Styles pour le tableau */
+.weapons-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.weapons-table th, .weapons-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.weapons-table th {
+    background-color: #007bff; /* Couleur d'arrière-plan de l'en-tête du tableau */
+    color: white;
+}
+
+.fav {
+    margin-left: 7px;
+    padding: 6px 14px; /* Ajoute du rembourrage autour du texte du bouton */
+    background-color: #4CAF50; /* Couleur de fond du bouton */
+    color: white; /* Couleur du texte */
+    border: none; /* Supprime la bordure */
+    border-radius: 4px; /* Rend les coins arrondis */
+    cursor: pointer; /* Change le curseur en pointeur au survol */
+    transition: background-color 0.3s, padding 0.3s; /* Ajoute une transition fluide pour le changement de couleur de fond et de rembourrage */
+}
+
+.fav:hover {
+    background-color: #45a049; /* Change la couleur de fond lors du survol */
+    padding: 7px 15px; /* Augmente légèrement le rembourrage lors du survol */
+}
+
+
+/* Styles pour la pagination */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination a {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s, padding 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+    padding: 7px 12px;
+}

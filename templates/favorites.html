@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoris - Monster Hunter World</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+    <div class="mhwimg" style="text-align: center;">
+        <a href="/index.html">
+            <img src="static/mhwlogo.png" alt="logo M">
+        </a>
+    </div>
+    <h1>Favoris</h1>
+    <h2>Armures favorites</h2>
+    <ul>
+        {{range .FavoriteItems.Armors}}
+        <li>
+            {{.ID}} : {{.Name}} {{.Rarete}}  {{.Type}}
+            <img class = "equipimg" src="{{.Assets.ImageH}}" alt="Armor Image">
+            <img class = "equipimg" src="{{.Assets.ImageF}}" alt="Armor Image">
+             - <a href="/remove-favorite?id={{.ID}}&type=weapons">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucune arme favorite</li>
+        {{end}}
+    </ul>
+
+    <h2>Armes favoris</h2>
+    <ul>
+        {{range .FavoriteItems.Weapons}}
+        <li>
+            {{.ID}} : {{.Name}} {{.Rarity}}  {{.Type}}
+            <img class = "equipimg" src="{{.Assets.Image}}" alt="Weapon Image">
+             - <a href="/remove-favorite?id={{.ID}}&type=weapons">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucune arme favorite</li>
+        {{end}}
+    </ul>
+
+    <h2>Monstres favoris</h2>
+    <ul>
+        {{range .FavoriteItems.Monsters}}
+        <li>
+            {{.ID}} : {{.Name}} {{.Species}} {{.Type}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucun monstre favori</li>
+        {{end}}
+    </ul>
+    <h2>Objets favoris</h2>
+    <ul>
+        {{range .FavoriteItems.Objets}}
+        <li>
+            {{.ID}} : {{.Name}} Rareté : {{.Rarete}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucun monstre favori</li>
+        {{end}}
+    </ul>
+    <h2>Compétences favorites</h2>
+    <ul>
+        {{range .FavoriteItems.Skills}}
+        <li>
+            {{.ID}} : {{.Name}}  - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucun monstre favori</li>
+        {{end}}
+    </ul>
+    <h2>Evenements favoris</h2>
+    <ul>
+        {{range .FavoriteItems.Events}}
+        <li>
+            {{.ID}} : {{.Name}} {{.Type}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucun monstre favori</li>
+        {{end}}
+    </ul>
+    <h2>Décorations favorites</h2>
+    <ul>
+        {{range .FavoriteItems.Deco}}
+        <li>
+            {{.ID}} : {{.Name}} Rareté : {{.Rarete}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucun monstre favori</li>
+        {{end}}
+    </ul>
+    <h2>Charmes favoris</h2>
+    <ul>
+        {{range .FavoriteItems.Charms}}
+        <li>
+            {{.ID}} : {{.Name}} - <a href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a>
+        </li>
+        {{else}}
+        <li>Aucun monstre favori</li>
+        {{end}}
+    </ul>
+</body>
+</html>

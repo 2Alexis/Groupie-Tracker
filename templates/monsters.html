@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Monsters - Monster Hunter World</title>
   
 </head>
 <body>
-    <div class = "mhwimg" style="text-align: center;">
-        <a href="/index.html">
+    <div class="header">
+        <div class="logo">
+               <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
-    <form action ="/monsters" method="post"> 
+    </div>
+
+    <div class="filter-section">
+    <form action ="/monsters" method="GET"> 
     <label for="sizeFilter">Filter by size:</label>
     <select name="sizeFilter">
         <option value="">All</option>
@@ -28,13 +32,16 @@
         <option value="water">Water</option>
         <option value="ice">Ice</option>
         <option value="poison">Poison</option>
-        <option value="thunder">Thuner</option>
+        <option value="thunder">Thunder</option>
         <option value="dragon">Dragon</option>
         </select>
-        <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
-        <button type="submit">OK</button>
-    <table class = "category" border="1" id="monstersTable">
+        <input type="text" name="q" placeholder="Rechercher un monstre..." value="{{.Query}}">
+        <button class = "search-btn" type="submit">Rechercher</button>
+    </div>
+    </form>
+    <table class = "weapons-table" border="1" id="monstersTable">
         <tr>
+          
             <th>Name</th>
             <th>Species</th>
             <th>Type</th>
@@ -43,13 +50,17 @@
             <th>Resistances</th>
             <th>Ailments</th>
             <th>Rewards</th>
+            <th>Favoris</th>
+          
         </tr>
         {{range .Monsters}}
         <tr>
-            <td><a href="/monster-details?id={{.ID}}">{{.Name}}</a></td>
+           
+            <td><a class = "link" href="/monster-details?id={{.ID}}">{{.Name}}</a></td>
             <td>{{.Species}}</td>
             <td>{{.Type}}</td>
             <td>{{.Description}}</td>
+            
             <td>
                 {{range $index, $element := .Weaknesses}}
                     {{if $index}}, {{end}}{{.Element}} x {{.Stars}}<br>
@@ -82,16 +93,24 @@
                 {{end}}
                 {{end}}
             </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="monsters">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="type" value="{{ .Type }}">
+                <input type="hidden" name="species" value="{{ .Species }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <button class="fav" type="submit">&#x2661;</button>
+            </form></td>
         </tr>
         {{end}}
     </table>
     {{if .HasPreviousPage}}
-    <a href="/weapons?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
+    <a href="/monsters?page={{.PreviousPage}}&sizeFilter={{.SizeFilter}}&resistanceFilter={{.ResistanceFilter}}&q={{.Query}}">Page précédente</a>
     {{end}}
-
-{{if .HasNextPage}}
-<a href="/weapons?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
-{{end}}
+    
+    {{if .HasNextPage}}
+    <a href="/monsters?page={{.NextPage}}&sizeFilter={{.SizeFilter}}&resistanceFilter={{.ResistanceFilter}}&q={{.Query}}">Page suivante</a>
+    {{end}}
 
    
 </body>

@@ -13,21 +13,24 @@
         <img src="static/mhwlogo.png" alt="logo M">
     </a>
     </div>
-    <input type="text" id="searchInput" onkeyup="searchDecorations()" placeholder="Rechercher par nom de décoration..." style="margin-bottom: 10px;">
-   
+    
+<form action ="/décorations" method="GET">
     <label for="rarityFilter">Filtrer par rareté:</label>
-<select id="rarityFilter" onchange="filterDeco()">
-    <option value="">Toutes les raretés</option>
-    <option value="5">5</option>
-    <option value="6">6</option>
-    <option value="7">7</option>
-    <option value="8">8</option>
-    <option value="9">9</option>
-    <option value="10">10</option>
-    <option value="11">11</option>
-    <option value="12">12</option>
-</select>
-
+        <select name="rarityFilter" >
+            <option value="">Toutes les raretés</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select><br/><br/>
+    <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
+    <button type="submit">OK</button>
+</form>
+    
 
     <table class = "category" border="1"  id="decoTable">
         <tr>
@@ -45,59 +48,25 @@
                     {{if $index}}{{end}}{{$element.Name}}<br>Level : {{$element.Niveau}}<br>{{$element.Description}}<br><br>
                 {{end}}
             </td>
-           
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="deco">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <input type="hidden" name="rarete" value="{{ .Rarete }}">
+             
+
+                <button type="submit">Add to Favorites</button>
+            </form></td>
         </tr>
         {{end}}
     </table>
     {{if .HasPreviousPage}}
-    <a href="/décorations?page={{.PreviousPage}}">Page précédente</a>
-{{end}}
+    <a href="/décorations?page={{.PreviousPage}}&rarityFilter={{.RarityFilter}}&q={{.Query}}">Page précédente</a>
+    {{end}}
+    
+    {{if .HasNextPage}}
+    <a href="/décorations?page={{.NextPage}}&rarityFilter={{.RarityFilter}}&q={{.Query}}">Page suivante</a>
+    {{end}}
 
-{{if .HasNextPage}}
-    <a href="/décorations?page={{.NextPage}}">Page suivante</a>
-{{end}}
-    <script>
-        function searchDecorations() {
-            // Récupérer la valeur saisie dans le champ de recherche
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("decoTable");
-            tr = table.getElementsByTagName("tr");
-
-            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        function filterDeco() {
-            var rarityFilter = document.getElementById("rarityFilter").value;
-        
-            var table = document.getElementById("decoTable");
-            var rows = table.getElementsByTagName("tr");
-        
-            for (var i = 1; i < rows.length; i++) { // Commence à l'index 1 pour éviter l'en-tête
-                var rarity = rows[i].getElementsByTagName("td")[1].textContent;
-        
-                // Appliquer le filtre
-                if (rarityFilter === "" || rarity === rarityFilter) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-        
-
-    </script>
-</body>
+   </body>
 </html>

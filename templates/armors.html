@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/tableau.css">
     <title>Armors - Monster Hunter World</title>
   
 </head>
@@ -13,10 +13,9 @@
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
-    <input type="text" id="searchInput" onkeyup="searchArmors()" placeholder="Rechercher par nom d'armure..." style="margin-bottom: 10px;">
-  
+    <form action ="/armors" method="GET">
     <label for="typeFilter">Filter by type:</label>
-    <select id="typeFilter" onchange="filterArmors()">
+    <select name="typeFilter" >
         <option value="">All</option>
         <option value="head">Head</option>
         <option value="chest">Chest</option>
@@ -26,7 +25,7 @@
     </select>
     
     <label for="rankFilter">Filter by rank:</label>
-    <select id="rankFilter" onchange="filterArmors()">
+    <select name="rankFilter">
         <option value="">All</option>
         <option value="low">Low</option>
         <option value="high">High</option>
@@ -34,7 +33,7 @@
     </select>
     
     <label for="rarityFilter">Filter by rarity:</label>
-    <select id="rarityFilter" onchange="filterArmors()">
+    <select name="rarityFilter" >
         <option value="">All</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -49,9 +48,10 @@
         <option value="11">11</option>
         <option value="12">12</option>
         
-        <!-- Ajoutez d'autres options selon vos besoins -->
     </select>
-    
+    <input type="text" name="q" placeholder="Rechercher une arme..." value="{{.Query}}">
+    <button type="submit">OK</button>
+</form>
 
 
     <table class = "category" border="1"  id="armorTable">
@@ -64,8 +64,8 @@
             <th>Max defense</th>
             <th>Augmented defense</th>
             <th>Resistances</th>
-            <th>Skills</th>
             <th>Image men / women</th>
+            <th>Favoris</th>
         </tr>
         {{range .Armors}}
         <tr>
@@ -94,64 +94,28 @@
                 <img src="{{.Assets.ImageH}}" alt="Male Armor Image">
                 <img src="{{.Assets.ImageF}}" alt="Female Armor Image">
             </td>
+            <td> <form action="/add-favorite" method="get">
+                <input type="hidden" name="category" value="armors">
+                <input type="hidden" name="id" value="{{ .ID }}">
+                <input type="hidden" name="name" value="{{ .Name }}">
+                <input type="hidden" name="type" value="{{ .Type }}">
+                <input type="hidden" name="rang" value="{{ .Rang }}">
+                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+                <input type="hidden" name="imageMale" value="{{ .Assets.ImageH }}">
+                <input type="hidden" name="imageFemale" value="{{ .Assets.ImageF }}">
+                <button type="submit">Add to Favorites</button>
+            </form></td>
         </tr>
         {{end}}
     </table>
     {{if .HasPreviousPage}}
-    <a href="/armors?page={{.PreviousPage}}">Page précédente</a>
-{{end}}
+    <a href="/armors?page={{.PreviousPage}}&rarityFilter={{.RarityFilter}}&rankFilter={{.RankFilter}}&typeFilter={{.TypeFilter}}&q={{.Query}}">Page précédente</a>
+    {{end}}
+    
+    {{if .HasNextPage}}
+    <a href="/armors?page={{.NextPage}}&rarityFilter={{.RarityFilter}}&rankFilter={{.RankFilter}}&typeFilter={{.TypeFilter}}&q={{.Query}}">Page suivante</a>
+    {{end}}
 
-{{if .HasNextPage}}
-    <a href="/armors?page={{.NextPage}}">Page suivante</a>
-{{end}}
-    <script>
-        function searchArmors() {
-            // Récupérer la valeur saisie dans le champ de recherche
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("armorTable");
-            tr = table.getElementsByTagName("tr");
-
-            // Parcourir toutes les lignes du tableau et les cacher si elles ne correspondent pas à la recherche
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; // Recherche dans la première colonne (Nom)
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        function filterArmors() {
-            var typeFilter = document.getElementById("typeFilter").value;
-            var rankFilter = document.getElementById("rankFilter").value;
-            var rarityFilter = document.getElementById("rarityFilter").value;
-        
-            var table = document.getElementById("armorTable");
-            var rows = table.getElementsByTagName("tr");
-        
-            for (var i = 1; i < rows.length; i++) { // Commence à l'index 1 pour éviter l'en-tête
-                var type = rows[i].getElementsByTagName("td")[1].textContent;
-                var rank = rows[i].getElementsByTagName("td")[3].textContent;
-                var rarity = rows[i].getElementsByTagName("td")[2].textContent;
-        
-                // Appliquer les filtres
-                if ((typeFilter === "" || type === typeFilter) &&
-                    (rankFilter === "" || rank === rankFilter) &&
-                    (rarityFilter === "" || rarity === rarityFilter)) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-        
-
-    </script>
+   
 </body>
 </html>

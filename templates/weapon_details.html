@@ -3,22 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/detail.css">
     <title>{{.Name}} Details - Monster Hunter World</title>
+   
 </head>
 <body>
-    <h1>{{.Name}} Details</h1>
-    <ul>
-        <li>Rarity: {{.Rarity}}</li>
-        <li>Attack (Display): {{.Attack.Display}}</li>
-        <li>Attack (Raw): {{.Attack.Raw}}</li>
-        <li>Elements:</li>
-        <ul>
-            {{range .Element}}
-                <li>{{.Type}} - Damage: {{.Damage}}</li>
-            {{end}}
-        </ul>
-        <li>Damage Type: {{.TypeDegats}}</li>
-        <li>Image: <img src="{{.Assets.Image}}" alt="Weapon Image"></li>
-    </ul>
+    <div class="container">
+        <h1>{{.Name}} </h1>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Rarity</td>
+                <td>{{.Rarity}}</td>
+            </tr>
+            <tr>
+                <td>Attack (Display)</td>
+                <td>{{.Attack.Display}}</td>
+            </tr>
+            <tr>
+                <td>Attack (Raw)</td>
+                <td>{{.Attack.Raw}}</td>
+            </tr>
+            <tr>
+                <td>Elements</td>
+                <td>
+                    <ul>
+                        {{range .Element}}
+                            <li>{{.Type}} - Damage: {{.Damage}}</li>
+                        {{end}}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Damage Type</td>
+                <td>{{.TypeDegats}}</td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td><img class ="elmt" src="{{.Assets.Image}}" alt="Weapon Image"></td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>

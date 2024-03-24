@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Name}} - Détails du Monstre</title>
-    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/detail.css">
 </head>
 <body>
-    <div class="mhwimg" style="text-align: center;">
+    <div class = "header">
+    <div class="logo">
         <a href="/index.html">
             <img src="static/mhwlogo.png" alt="logo M">
         </a>
     </div>
+    </div>
+    <div class="container">
     <h1>{{.Name}}</h1>
     <h2>Espèce: {{.Species}}</h2>
     <p>Type: {{.Type}}</p>
