@@ -31,7 +31,7 @@
         <tr>
             <td>{{.ID}}</td>
             <td><a class = "link" href="/armor-details?id={{.ID}}">{{.Name}}</a></td>
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td>{{.Type}}</td>
             <td><img class="equipimg" src="{{.Assets.ImageH}}" alt="Armor Image"></td>
             <td><img class="equipimg" src="{{.Assets.ImageF}}" alt="Armor Image"></td>
@@ -82,7 +82,7 @@
             <td>{{.ID}}</td>
             <td><a class = "link" href="/monster-details?id={{.ID}}">{{.Name}}</a></td>
             <td>{{.Species}}</td>
-            <td>{{.Type}}</td>
+            <td>{{.Size}}</td>
             <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=monsters">Retirer des favoris</a></td>
         </tr>
         {{else}}
@@ -103,7 +103,7 @@
         <tr>
             <td><a class = "link" href="/item-details?id={{.ID}}">{{.Name}}</a></td>
             <td>{{.Name}}</td>
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=items">Retirer des favoris</a></td>
         </tr>
         {{else}}
@@ -165,7 +165,7 @@
         <tr>
             <td>{{.ID}}</td>
             <td><a class = "link" href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td><a class = "unfav" href="/remove-favorite?id={{.ID}}&type=deco">Retirer des favoris</a></td>
         </tr>
         {{else}}

@@ -44,6 +44,19 @@ type FavoritesItems struct {
 var favoriteItems []FavoritesItems
 
 // Structure pour stocker les données des armes
+
+type PageData struct {
+	Weapons  []Weapon
+	Monsters []Monster
+	Objets   []Objets
+	Skills   []Skills
+	Events   []Evenements
+	Deco     []Decorations
+	Charms   []Charms
+	Armors   []Armor
+}
+
+// Structure pour stocker les données des armes
 type Weapon struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
@@ -58,21 +71,18 @@ type Weapon struct {
 		Type   string `json:"type"`
 		Damage int    `json:"damage"`
 	} `json:"elements"`
-	TypeDegats string `json:"damageType"`
-	Assets     struct {
+
+	Assets struct {
 		Image string `json:"image"`
 	} `json:"assets"`
-}
-
-type PageData struct {
-	Weapons  []Weapon
-	Monsters []Monster
-	Objets   []Objets
-	Skills   []Skills
-	Events   []Evenements
-	Deco     []Decorations
-	Charms   []Charms
-	Armors   []Armor
+	Rang        string `json:"rank"`
+	TypeDegats  string `json:"damageType"`
+	Resistances []struct {
+		Element string `json:"element"`
+	} `json:"resistances"`
+	QRang       int    `json:"questRank"`
+	Description string `json:"description"`
+	Size        string `json:"type"`
 }
 
 type Skills struct {
@@ -80,37 +90,96 @@ type Skills struct {
 	Name        string `json:"name"`
 	Category    string `json:"category"`
 	Description string `json:"description"`
-	Rang        []struct {
+	Type        string `json:"type"`
+	Rarity      int    `json:"rarity"`
+	Rank        []struct {
 		Niveau      int    `json:"level"`
 		Description string `json:"description"`
 	} `json:"ranks"`
+	Skills []struct {
+		Name        string `json:"skillName"`
+		Niveau      int    `json:"level"`
+		Description string `json:"description"`
+	} `json:"skills"`
+	Element []struct {
+		Type   string `json:"type"`
+		Damage int    `json:"damage"`
+	} `json:"elements"`
+	TypeDegats  string `json:"damageType"`
+	Rang        string `json:"rank"`
+	Resistances []struct {
+		Element string `json:"element"`
+	} `json:"resistances"`
+	QRang int    `json:"questRank"`
+	Size  string `json:"type"`
 }
 
 type Objets struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
-	Rarete      int    `json:"rarity"`
+	Rarity      int    `json:"rarity"`
 	Description string `json:"description"`
 	Category    string `json:"category"`
+	Type        string `json:"type"`
+	Rank        []struct {
+		Niveau      int    `json:"level"`
+		Description string `json:"description"`
+	} `json:"ranks"`
+	Skills []struct {
+		Name        string `json:"skillName"`
+		Niveau      int    `json:"level"`
+		Description string `json:"description"`
+	} `json:"skills"`
+	Rang        string `json:"rank"`
+	Resistances []struct {
+		Element string `json:"element"`
+	} `json:"resistances"`
+	QRang int `json:"questRank"`
+
+	Size    string `json:"type"`
+	Element []struct {
+		Type   string `json:"type"`
+		Damage int    `json:"damage"`
+	} `json:"elements"`
+	TypeDegats string `json:"damageType"`
 }
 
 type Decorations struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Category string `json:"category"`
-	Rarete   int    `json:"rarity"`
+	Rarity   int    `json:"rarity"`
+	Type     string `json:"type"`
 	Skills   []struct {
 		Name        string `json:"skillName"`
 		Niveau      int    `json:"level"`
 		Description string `json:"description"`
 	} `json:"skills"`
+	Rank []struct {
+		Niveau      int    `json:"level"`
+		Description string `json:"description"`
+	} `json:"ranks"`
+	Rang        string `json:"rank"`
+	Resistances []struct {
+		Element string `json:"element"`
+	} `json:"resistances"`
+	QRang       int    `json:"questRank"`
+	Description string `json:"description"`
+	Size        string `json:"type"`
+	Element     []struct {
+		Type   string `json:"type"`
+		Damage int    `json:"damage"`
+	} `json:"elements"`
+	TypeDegats string `json:"damageType"`
 }
 
 type Charms struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Category string `json:"category"`
-	Rang     []struct {
+	Type     string `json:"type"`
+	Rarity   int    `json:"rarity"`
+	CRank    []struct {
 		Niveau int `json:"level"`
 		Rarete int `json:"rarity"`
 		Skills []struct {
@@ -119,6 +188,18 @@ type Charms struct {
 			Description string `json:"description"`
 		}
 	} `json:"ranks"`
+	Rang        string `json:"rank"`
+	Resistances []struct {
+		Element string `json:"element"`
+	} `json:"resistances"`
+	QRang       int    `json:"questRank"`
+	Description string `json:"description"`
+	Size        string `json:"type"`
+	Element     []struct {
+		Type   string `json:"type"`
+		Damage int    `json:"damage"`
+	} `json:"elements"`
+	TypeDegats string `json:"damageType"`
 }
 
 type Armor struct {
@@ -126,7 +207,7 @@ type Armor struct {
 	Name        string         `json:"name"`
 	Category    string         `json:"category"`
 	Type        string         `json:"type"`
-	Rarete      int            `json:"rarity"`
+	Rarity      int            `json:"rarity"`
 	Rang        string         `json:"rank"`
 	Resistances map[string]int `json:"resistances"`
 	Skills      []struct {
@@ -144,6 +225,15 @@ type Armor struct {
 		ImageH string `json:"imageMale"`
 		ImageF string `json:"imageFemale"`
 	} `json:"assets"`
+
+	QRang       int    `json:"questRank"`
+	Description string `json:"description"`
+	Size        string `json:"type"`
+	Element     []struct {
+		Type   string `json:"type"`
+		Damage int    `json:"damage"`
+	} `json:"elements"`
+	TypeDegats string `json:"damageType"`
 }
 
 // Structure pour stocker les données des monstres
@@ -152,7 +242,9 @@ type Monster struct {
 	Category    string `json:"category"` // Type de monstre
 	Name        string `json:"name"`
 	Species     string `json:"species"`
+	Size        string `json:"type"`
 	Type        string `json:"type"`
+	Rarity      int    `json:"rarity"`
 	Description string `json:"description"`
 	Recompense  []struct {
 		Item struct {
@@ -170,6 +262,10 @@ type Monster struct {
 	Resistances []struct {
 		Element string `json:"element"`
 	} `json:"resistances"`
+	Rang  string `json:"rank"`
+	QRang int    `json:"questRank"`
+
+	TypeDegats string `json:"damageType"`
 }
 
 type Evenements struct {
@@ -177,13 +273,24 @@ type Evenements struct {
 	Name         string `json:"name"`
 	Category     string `json:"category"`
 	Type         string `json:"type"`
-	Rang         int    `json:"questRank"`
+	Rarity       int    `json:"rarity"`
+	QRang        int    `json:"questRank"`
 	Description  string `json:"description"`
 	Exigences    string `json:"requirements"`
 	Objectif     string `json:"successConditions"`
 	Localisation struct {
 		Name string `json:"name"`
 	} `json:"location"`
+	Rang        string `json:"rank"`
+	Resistances []struct {
+		Element string `json:"element"`
+	} `json:"resistances"`
+	Size    string `json:"type"`
+	Element []struct {
+		Type   string `json:"type"`
+		Damage int    `json:"damage"`
+	} `json:"elements"`
+	TypeDegats string `json:"damageType"`
 }
 
 var armors []Armor
@@ -202,8 +309,20 @@ func fetchJSONData(url string, data interface{}) error {
 	}
 	return nil
 }
-
 func mainPageHandler(w http.ResponseWriter, r *http.Request) {
+	// Obtenir les paramètres de filtrage de la requête
+	typeFilterEvent := r.URL.Query().Get("typeFilterEvent")
+	typeFilterArmor := r.URL.Query().Get("typeFilterArmor")
+	rankFilter := r.URL.Query().Get("rankFilter")
+
+	rankFilterArmor := r.URL.Query().Get("rankFilterArmor")
+	rarityFilter := r.URL.Query().Get("rarityFilter")
+	elementFilter := r.URL.Query().Get("elementFilter")
+	damageTypeFilter := r.URL.Query().Get("damageTypeFilter")
+	sizeFilter := r.URL.Query().Get("sizeFilter")
+	resistanceFilter := r.URL.Query().Get("resistanceFilter")
+	query := r.URL.Query().Get("q")
+
 	var weapons []Weapon
 	weaponsURL := "https://mhw-db.com/weapons"
 	err := fetchJSONData(weaponsURL, &weapons)
@@ -211,11 +330,24 @@ func mainPageHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	if len(weapons) == 0 {
-		log.Println("Aucune donnée n'a été reçue pour les armes.")
-	} else {
-		log.Println("Données reçues pour les armes:", weapons)
+	var filteredWeapons []Weapon
+	for _, weapon := range weapons {
+		// Vérifiez si l'arme correspond aux critères de filtrage
+		if (sizeFilter == "" || weapon.Size == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(weapon.Resistances, resistanceFilter)) &&
+			(typeFilterEvent == "" || weapon.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(weapon.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || weapon.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || weapon.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(weapon.Rarity) == rarityFilter) &&
+			(elementFilter == "" || containsElement(weapon.Element, elementFilter)) &&
+			(damageTypeFilter == "" || weapon.TypeDegats == damageTypeFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(weapon.Name), strings.ToLower(query))) {
+			filteredWeapons = append(filteredWeapons, weapon)
+		}
 	}
+
+	// Filtrer les armures en fonction des critères de filtrage
 
 	var armors []Armor
 	armorsURL := "https://mhw-db.com/armor"
@@ -229,45 +361,167 @@ func mainPageHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Données reçues pour les armes:", weapons)
 	}
 
+	var filteredArmors []Armor
+	for _, armor := range armors {
+		// Vérifiez si l'armure correspond aux critères de filtrage
+		if (sizeFilter == "" || armor.Size == sizeFilter) &&
+			(resistanceFilter == "" || armor.Resistances[resistanceFilter] > 0) &&
+			(typeFilterEvent == "" || armor.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(armor.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || armor.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || armor.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(armor.Rarity) == rarityFilter) &&
+			(elementFilter == "" || containsElement(armor.Element, elementFilter)) &&
+			(damageTypeFilter == "" || armor.TypeDegats == damageTypeFilter) &&
+
+			(query == "" || strings.Contains(strings.ToLower(armor.Name), strings.ToLower(query))) {
+			filteredArmors = append(filteredArmors, armor)
+		}
+	}
+
 	var charms []Charms
 	charmsURL := "https://mhw-db.com/charms"
 	errcharms := fetchJSONData(charmsURL, &charms)
 	if errcharms != nil {
 		log.Fatal(errcharms)
 	}
+
+	var filteredCharms []Charms
+	for _, charm := range charms {
+		if (sizeFilter == "" || charm.Size == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(charm.Resistances, resistanceFilter)) &&
+			(typeFilterEvent == "" || charm.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(charm.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || charm.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || charm.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(charm.Rarity) == rarityFilter) &&
+			(elementFilter == "" || containsElement(charm.Element, elementFilter)) &&
+			(damageTypeFilter == "" || charm.TypeDegats == damageTypeFilter) &&
+			query == "" || strings.Contains(strings.ToLower(charm.Name), strings.ToLower(query)) {
+			filteredCharms = append(filteredCharms, charm)
+		}
+	}
+
 	var deco []Decorations
 	decoURL := "https://mhw-db.com/decorations"
 	errDeco := fetchJSONData(decoURL, &deco)
 	if errDeco != nil {
 		log.Fatal(errDeco)
 	}
+
+	// Filtrer les décorations en fonction des critères de filtrage
+	var filteredDeco []Decorations
+	for _, decoration := range deco {
+		// Vérifiez si la décoration correspond aux critères de filtrage
+		if (sizeFilter == "" || decoration.Size == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(decoration.Resistances, resistanceFilter)) &&
+			(typeFilterEvent == "" || decoration.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(decoration.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || decoration.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || decoration.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(decoration.Rarity) == rarityFilter) &&
+			(elementFilter == "" || containsElement(decoration.Element, elementFilter)) &&
+			(damageTypeFilter == "" || decoration.TypeDegats == damageTypeFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(decoration.Name), strings.ToLower(query))) {
+			filteredDeco = append(filteredDeco, decoration)
+		}
+	}
+
 	var events []Evenements
 	eventsURL := "https://mhw-db.com/events"
 	errevents := fetchJSONData(eventsURL, &events)
 	if errevents != nil {
 		log.Fatal(errevents)
 	}
+
+	var filteredEvents []Evenements
+	for _, event := range events {
+		// Vérifiez si l'événement correspond aux critères de filtrage
+		if (sizeFilter == "" || event.Size == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(event.Resistances, resistanceFilter)) &&
+			(typeFilterEvent == "" || event.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(event.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || event.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || event.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(event.Rarity) == rarityFilter) &&
+			(elementFilter == "" || containsElement(event.Element, elementFilter)) &&
+			(damageTypeFilter == "" || event.TypeDegats == damageTypeFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(event.Name), strings.ToLower(query))) {
+			filteredEvents = append(filteredEvents, event)
+		}
+	}
+
 	var items []Objets
 	itemsURL := "https://mhw-db.com/items"
 	errItems := fetchJSONData(itemsURL, &items)
 	if errItems != nil {
 		log.Fatal(errItems)
 	}
+
+	var filteredItems []Objets
+	for _, item := range items {
+		// Vérifiez si l'objet correspond aux critères de filtrage
+		if (sizeFilter == "" || item.Size == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(item.Resistances, resistanceFilter)) &&
+			(typeFilterEvent == "" || item.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(item.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || item.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || item.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(item.Rarity) == rarityFilter) &&
+			(elementFilter == "" || containsElement(item.Element, elementFilter)) &&
+			(damageTypeFilter == "" || item.TypeDegats == damageTypeFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(item.Name), strings.ToLower(query))) {
+			filteredItems = append(filteredItems, item)
+		}
+	}
+
 	var monsters []Monster
 	monstersURL := "https://mhw-db.com/monsters"
 	errmonsters := fetchJSONData(monstersURL, &monsters)
 	if errmonsters != nil {
 		log.Fatal(errmonsters)
 	}
+
+	var filteredMonsters []Monster
+	for _, monster := range monsters {
+		// Vérifiez si le monstre correspond aux critères de filtrage
+		if (sizeFilter == "" || monster.Size == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(monster.Resistances, resistanceFilter)) &&
+			(typeFilterEvent == "" || monster.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(monster.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || monster.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || monster.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(monster.Rarity) == rarityFilter) &&
+
+			(damageTypeFilter == "" || monster.TypeDegats == damageTypeFilter) &&
+			(query == "" || strings.Contains(strings.ToLower(monster.Name), strings.ToLower(query))) {
+			filteredMonsters = append(filteredMonsters, monster)
+		}
+	}
+
 	var skills []Skills
 	skillsURL := "https://mhw-db.com/skills"
 	errskills := fetchJSONData(skillsURL, &skills)
 	if errskills != nil {
 		log.Fatal(errskills)
 	}
-	// Autres traitements...
 
-	// Suppose que vous avez besoin de transmettre weapons et armors au modèle HTML
+	var filteredSkills []Skills
+	for _, skill := range skills {
+		if (sizeFilter == "" || skill.Size == sizeFilter) &&
+			(resistanceFilter == "" || containsResistance(skill.Resistances, resistanceFilter)) &&
+			(typeFilterEvent == "" || skill.Type == typeFilterEvent) &&
+			(rankFilter == "" || strconv.Itoa(skill.QRang) == rankFilter) &&
+			(typeFilterArmor == "" || skill.Type == typeFilterArmor) &&
+			(rankFilterArmor == "" || skill.Rang == rankFilterArmor) &&
+			(rarityFilter == "" || strconv.Itoa(skill.Rarity) == rarityFilter) &&
+			(elementFilter == "" || containsElement(skill.Element, elementFilter)) &&
+			(damageTypeFilter == "" || skill.TypeDegats == damageTypeFilter) &&
+			query == "" || strings.Contains(strings.ToLower(skill.Name), strings.ToLower(query)) {
+			filteredSkills = append(filteredSkills, skill)
+		}
+	}
+
 	data := struct {
 		Weapons  []Weapon
 		Armors   []Armor
@@ -277,15 +531,17 @@ func mainPageHandler(w http.ResponseWriter, r *http.Request) {
 		Items    []Objets
 		Skills   []Skills
 		Monsters []Monster
+		Query    string
 	}{
-		Weapons:  weapons,
-		Armors:   armors,
-		Charms:   charms,
-		Deco:     deco,
-		Events:   events,
-		Items:    items,
-		Skills:   skills,
-		Monsters: monsters,
+		Weapons:  filteredWeapons,
+		Armors:   filteredArmors,
+		Charms:   filteredCharms,
+		Deco:     filteredDeco,
+		Events:   filteredEvents,
+		Items:    filteredItems,
+		Skills:   filteredSkills,
+		Monsters: filteredMonsters,
+		Query:    query,
 	}
 	// Autres traitements...
 
@@ -433,7 +689,7 @@ func itemsHandler(w http.ResponseWriter, r *http.Request) {
 	var filteredItems []Objets
 	for _, item := range items {
 		// Vérifiez si l'objet correspond aux critères de filtrage
-		if (rarityFilter == "" || strconv.Itoa(item.Rarete) == rarityFilter) &&
+		if (rarityFilter == "" || strconv.Itoa(item.Rarity) == rarityFilter) &&
 			(searchQuery == "" || strings.Contains(strings.ToLower(item.Name), strings.ToLower(searchQuery))) {
 			filteredItems = append(filteredItems, item)
 		}
@@ -541,7 +797,7 @@ func eventsHandler(w http.ResponseWriter, r *http.Request) {
 	for _, event := range events {
 		// Vérifiez si l'événement correspond aux critères de filtrage
 		if (typeFilter == "" || event.Type == typeFilter) &&
-			(rankFilter == "" || strconv.Itoa(event.Rang) == rankFilter) &&
+			(rankFilter == "" || strconv.Itoa(event.QRang) == rankFilter) &&
 			(query == "" || strings.Contains(strings.ToLower(event.Name), strings.ToLower(query))) {
 			filteredEvents = append(filteredEvents, event)
 		}
@@ -650,7 +906,7 @@ func decoHandler(w http.ResponseWriter, r *http.Request) {
 	var filteredDeco []Decorations
 	for _, decoration := range deco {
 		// Vérifiez si la décoration correspond aux critères de filtrage
-		if (rarityFilter == "" || strconv.Itoa(decoration.Rarete) == rarityFilter) &&
+		if (rarityFilter == "" || strconv.Itoa(decoration.Rarity) == rarityFilter) &&
 			(query == "" || strings.Contains(strings.ToLower(decoration.Name), strings.ToLower(query))) {
 			filteredDeco = append(filteredDeco, decoration)
 		}
@@ -993,7 +1249,7 @@ func armorsHandler(w http.ResponseWriter, r *http.Request) {
 		// Vérifiez si l'armure correspond aux critères de filtrage
 		if (typeFilter == "" || armor.Type == typeFilter) &&
 			(rankFilter == "" || armor.Rang == rankFilter) &&
-			(rarityFilter == "" || strconv.Itoa(armor.Rarete) == rarityFilter) &&
+			(rarityFilter == "" || strconv.Itoa(armor.Rarity) == rarityFilter) &&
 			(query == "" || strings.Contains(strings.ToLower(armor.Name), strings.ToLower(query))) {
 			filteredArmors = append(filteredArmors, armor)
 		}
@@ -1113,7 +1369,7 @@ func monstersHandler(w http.ResponseWriter, r *http.Request) {
 	var filteredMonsters []Monster
 	for _, monster := range monsters {
 		// Vérifiez si le monstre correspond aux critères de filtrage
-		if (sizeFilter == "" || monster.Type == sizeFilter) &&
+		if (sizeFilter == "" || monster.Size == sizeFilter) &&
 			(resistanceFilter == "" || containsResistance(monster.Resistances, resistanceFilter)) &&
 			(searchQuery == "" || strings.Contains(strings.ToLower(monster.Name), strings.ToLower(searchQuery))) {
 			filteredMonsters = append(filteredMonsters, monster)
@@ -1356,7 +1612,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 		monster.ID, _ = strconv.Atoi(itemID)
 		monster.Name = itemName
 		monster.Species = itemSpecies
-		monster.Type = itemType
+		monster.Size = itemType
 		// Ajoutez d'autres détails du monstre si nécessaire
 		// ...
 
@@ -1365,7 +1621,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 			Category: "monsters",
 			ID:       monster.ID,
 			Name:     monster.Name,
-			Type:     monster.Type,
+			Size:     monster.Size,
 			Species:  monster.Species,
 			// Ajoutez d'autres détails du monstre si nécessaire
 			// ...
@@ -1377,7 +1633,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 		var objet Objets
 		objet.ID, _ = strconv.Atoi(itemID)
 		objet.Name = itemName
-		objet.Rarete, _ = strconv.Atoi(itemRarity)
+		objet.Rarity, _ = strconv.Atoi(itemRarity)
 
 		// Ajoutez d'autres détails du monstre si nécessaire
 		// ...
@@ -1387,7 +1643,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 			Category: "items",
 			ID:       objet.ID,
 			Name:     objet.Name,
-			Rarete:   objet.Rarete,
+			Rarity:   objet.Rarity,
 			// Ajoutez d'autres détails du monstre si nécessaire
 			// ...
 		}
@@ -1437,7 +1693,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 		var deco Decorations
 		deco.ID, _ = strconv.Atoi(itemID)
 		deco.Name = itemName
-		deco.Rarete, _ = strconv.Atoi(itemRarity)
+		deco.Rarity, _ = strconv.Atoi(itemRarity)
 
 		// Ajoutez d'autres détails de l'arme si nécessaire
 		// ...
@@ -1447,7 +1703,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 			Category: "deco",
 			ID:       deco.ID,
 			Name:     deco.Name,
-			Rarete:   deco.Rarete,
+			Rarity:   deco.Rarity,
 
 			// Ajoutez d'autres détails de l'arme si nécessaire
 			// ...
@@ -1479,7 +1735,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 		armor.ID, _ = strconv.Atoi(itemID)
 		armor.Name = itemName
 		armor.Type = itemType
-		armor.Rarete, _ = strconv.Atoi(itemRarity)
+		armor.Rarity, _ = strconv.Atoi(itemRarity)
 		armor.Assets.ImageH = itemImageH
 		armor.Assets.ImageF = itemImageF
 		// Ajoutez d'autres détails de l'arme si nécessaire
@@ -1491,7 +1747,7 @@ func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 			ID:       armor.ID,
 			Name:     armor.Name,
 			Type:     armor.Type,
-			Rarete:   armor.Rarete,
+			Rarity:   armor.Rarity,
 			Assets: struct {
 				ImageH string `json:"imageMale"`
 				ImageF string `json:"imageFemale"`

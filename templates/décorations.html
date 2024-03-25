@@ -45,7 +45,7 @@
         <tr>
             <td><a class = "link" href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
          
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td>
                 {{range $index, $element := .Skills}}
                     {{if $index}}{{end}}{{$element.Name}}<br>Level : {{$element.Niveau}}<br>{{$element.Description}}<br><br>
@@ -55,7 +55,7 @@
                 <input type="hidden" name="category" value="deco">
                 <input type="hidden" name="id" value="{{ .ID }}">
                 <input type="hidden" name="name" value="{{ .Name }}">
-                <input type="hidden" name="rarete" value="{{ .Rarete }}">
+                <input type="hidden" name="rarete" value="{{ .Rarity }}">
              
 
                 <button class = "fav" type="submit">&#x2661;</button>

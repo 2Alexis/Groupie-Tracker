@@ -15,48 +15,52 @@
         </a>
     </div>
 </div>
+<h2>Charms</h2>
 <div class="filter-section">
 <form action ="/charms" method="GET">
     <input type="text" name="q" placeholder="Rechercher un charme..." value="{{.Query}}">
-    <button class = "search-btn" type="submit">Rechercer</button>
+    <button class = "search-btn" type="submit">Rechercher</button>
 </form>
-    
+
     <table class = "weapon-table" border="1" id="charmsTable">
+        
         <tr>
             <th>Name</th>
             <th>Ranks</th>
             <th>Skills</th>
             <th>Favoris</th>
         </tr>
-        {{range .Charms}}
-        <tr>
-            <td><a class = "link" href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
-            <td>
-                {{range $index, $element := .Rang}}
-                    {{if $index}}{{end}}Level : {{$element.Niveau}}<br>Rarity : {{$element.Rarete}}<br><br>
-                {{end}}
-            </td>
-            <td>
-                {{range $index, $element := .Rang}}
-                    {{range $index, $skill := $element.Skills}}
-                        {{if $index}}, {{end}}{{.Name}}<br>Level : {{$skill.Niveau}}<br>{{$skill.Description}}<br><br>
+        
+        <!-- Afficher les informations sur les charmes -->
+       
+            {{range .Charms}}
+            <tr>
+                <td><a class = "link" href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
+                <td>
+                    {{range $index, $element := .CRank}}
+                        {{if $index}}{{end}}Level : {{$element.Niveau}}<br>Rarity : {{$element.Rarete}}<br><br>
                     {{end}}
-                {{end}}
-            </td>
-            <td> <form action="/add-favorite" method="get">
-                <input type="hidden" name="category" value="charms">
-                <input type="hidden" name="id" value="{{ .ID }}">
-                <input type="hidden" name="name" value="{{ .Name }}">
-
-             
-
-                <button class = "fav" type="submit">&#x2661;</button>
-            </form></td>
-        </tr>
-        {{end}}
-    </table>
+                </td>
+                <td>
+                    {{range $index, $element := .CRank}}
+                        {{range $index, $skill := $element.Skills}}
+                            {{if $index}}, {{end}}{{.Name}}<br>Level : {{$skill.Niveau}}<br>{{$skill.Description}}<br><br>
+                        {{end}}
+                    {{end}}
+                </td>
+                <td> <form action="/add-favorite" method="get">
+                    <input type="hidden" name="category" value="charms">
+                    <input type="hidden" name="id" value="{{ .ID }}">
+                    <input type="hidden" name="name" value="{{ .Name }}">
+    
+                 
+    
+                  <button class="fav" type="submit">&#x2661;</button>
+                </form></td>
+            </tr>
+            {{end}}
+        </table>
   </div> 
-  <div class = "pagination">
     {{if .HasPreviousPage}}
     <a href="/charms?page={{.PreviousPage}}&q={{.Query}}">Page précédente</a>
     {{end}}
@@ -64,6 +68,6 @@
     {{if .HasNextPage}}
     <a href="/charms?page={{.NextPage}}&q={{.Query}}">Page suivante</a>
     {{end}}
-  </div>
+  
 </body>
 </html>

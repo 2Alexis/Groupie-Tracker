@@ -17,8 +17,110 @@
 
     <div class="filter-section">
         <form action="/search" method="GET">
-            <input type="text" name="q" placeholder="Rechercher un élément..." value="">
-            <button  class="search-btn" type="submit">Rechercher</button>
+               
+
+            
+            
+            <label for="rankFilter">Filtrer par rang :</label>
+                <select name="rankFilter" >
+                    <option value="">Tous les rangs</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <!-- Ajoutez d'autres options selon vos besoins -->
+                </select>
+            <label for="rarityFilter">Filtrer par rareté:</label>
+            <select name="rarityFilter" >
+                <option value="">Toutes les raretés</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                 
+            </select>
+            
+
+                <label for="typeFilterEvent">Filtrer par type d'événement :</label>
+                <select name="typeFilterEvent" >
+                    <option value="">Tous les types</option>
+                    <option value="event quest">Event Quest</option>
+                    <option value="challenge quest">Challenge Quest</option>
+                    <option value="kulve taroth siege">Kulve Taroth siege</option>
+                    <!-- Ajoutez d'autres options selon vos besoins -->
+                </select>
+                <label for="rankFilterArmor">Filter by rank:</label>
+                <select name="rankFilterArmor">
+                    <option value="">All</option>
+                    <option value="low">Low</option>
+                    <option value="high">High</option>
+                    <option value="master">Master</option>
+                </select>
+                <label for="typeFilterArmor">Filter by type:</label>
+                <select name="typeFilterArmor" >
+                    <option value="">All</option>
+                    <option value="head">Head</option>
+                    <option value="chest">Chest</option>
+                    <option value="gloves">Gloves</option>
+                    <option value="waist">Waist</option>
+                    <option value="legs">Legs</option>
+                </select>
+                <label for="resistanceFilter">Filter by resistances:</label>
+                <select name="resistanceFilter">
+                    <option value="">All</option>
+                    <option value="fire">Fire</option>
+                    <option value="water">Water</option>
+                    <option value="ice">Ice</option>
+                    <option value="poison">Poison</option>
+                    <option value="thunder">Thunder</option>
+                    <option value="dragon">Dragon</option>
+                    </select>
+               
+               
+            <label for="elementFilter">Filter by elements (All):</label>
+            <select name="elementFilter" >
+                <option value="">All</option>
+                <option value="fire">Fire</option>
+                <option value="water">Water</option>
+                <option value="poison">Poison</option>
+                <option value="thunder">Thunder</option>
+                <option value="dragon">Dragon</option>
+                <option value="paralysis">Paralysis</option>
+                <option value="ice">Ice</option>
+           
+            </select>
+            
+            <label for="damageTypeFilter">Filter by damages (Weapons) :</label>
+            <select name="damageTypeFilter" >
+                <option value="">All</option>
+                <option value="sever">Sever</option>
+                <option value="blunt">Blunt</option>
+                <option value="projectile">Projectile</option>
+            </select>
+            <label for="sizeFilter">Filter by size (Monsters) :</label>
+            <select name="sizeFilter">
+                <option value="">All</option>
+                <option value="small">Small</option>
+                <option value="large">Large</option>
+            </select>
+            <!-- Ajoutez d'autres filtres ici -->
+    
+            <label for="search">Rechercher :</label>
+            <input type="text" id="search" name="q" placeholder="Nom de l'élément..." value = "{{.Query}}">
+            <input class = "search-btn" type="submit" value="Rechercher">
         </form>
     </div>
       <h2>Armures</h2>
@@ -40,7 +142,7 @@
         <tr>
             <td><a class = "link" href="/armor-details?id={{.ID}}">{{.Name}}</a></td>
             <td>{{.Type}}</td>
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td>{{.Rang}}</td>
             <td>{{.Defense.Base}}</td>
             <td>{{.Defense.Max}}</td>
@@ -69,7 +171,7 @@
                 <input type="hidden" name="name" value="{{ .Name }}">
                 <input type="hidden" name="type" value="{{ .Type }}">
                 <input type="hidden" name="rang" value="{{ .Rang }}">
-                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+                <input type="hidden" name="rarity" value="{{ .Rarity }}">
                 <input type="hidden" name="imageMale" value="{{ .Assets.ImageH }}">
                 <input type="hidden" name="imageFemale" value="{{ .Assets.ImageF }}">
               <button class="fav" type="submit">&#x2661;</button>
@@ -79,39 +181,44 @@
     </table>
     <h2>Charms</h2>
     <!-- Afficher les informations sur les charmes -->
-    <table class = "weapons-table" border="1" id="charmsTable">
+    <table class = "weapon-table" border="1" id="charmsTable">
+        
         <tr>
             <th>Name</th>
             <th>Ranks</th>
             <th>Skills</th>
+            <th>Favoris</th>
         </tr>
-        {{range .Charms}}
-        <tr>
-            <td><a class = "link" href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
-            <td>
-                {{range $index, $element := .Rang}}
-                    {{if $index}}{{end}}Level : {{$element.Niveau}}<br>Rarity : {{$element.Rarete}}<br><br>
-                {{end}}
-            </td>
-            <td>
-                {{range $index, $element := .Rang}}
-                    {{range $index, $skill := $element.Skills}}
-                        {{if $index}}, {{end}}{{.Name}}<br>Level : {{$skill.Niveau}}<br>{{$skill.Description}}<br><br>
+        
+        <!-- Afficher les informations sur les charmes -->
+       
+            {{range .Charms}}
+            <tr>
+                <td><a class = "link" href="/charm-details?id={{.ID}}">{{.Name}}</a></td>
+                <td>
+                    {{range $index, $element := .CRank}}
+                        {{if $index}}{{end}}Level : {{$element.Niveau}}<br>Rarity : {{$element.Rarete}}<br><br>
                     {{end}}
-                {{end}}
-            </td>
-            <td> <form action="/add-favorite" method="get">
-                <input type="hidden" name="category" value="charms">
-                <input type="hidden" name="id" value="{{ .ID }}">
-                <input type="hidden" name="name" value="{{ .Name }}">
-
-             
-
-              <button class="fav" type="submit">&#x2661;</button>
-            </form></td>
-        </tr>
-        {{end}}
-    </table>
+                </td>
+                <td>
+                    {{range $index, $element := .CRank}}
+                        {{range $index, $skill := $element.Skills}}
+                            {{if $index}}, {{end}}{{.Name}}<br>Level : {{$skill.Niveau}}<br>{{$skill.Description}}<br><br>
+                        {{end}}
+                    {{end}}
+                </td>
+                <td> <form action="/add-favorite" method="get">
+                    <input type="hidden" name="category" value="charms">
+                    <input type="hidden" name="id" value="{{ .ID }}">
+                    <input type="hidden" name="name" value="{{ .Name }}">
+    
+                 
+    
+                  <button class="fav" type="submit">&#x2661;</button>
+                </form></td>
+            </tr>
+            {{end}}
+        </table>
 
     <h2>Decorations</h2>
     <!-- Afficher les informations sur les monstres -->
@@ -125,7 +232,7 @@
         <tr>
             <td><a class = "link" href="/deco-details?id={{.ID}}">{{.Name}}</a></td>
          
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td>
                 {{range $index, $element := .Skills}}
                     {{if $index}}{{end}}{{$element.Name}}<br>Level : {{$element.Niveau}}<br>{{$element.Description}}<br><br>
@@ -135,7 +242,7 @@
                 <input type="hidden" name="category" value="deco">
                 <input type="hidden" name="id" value="{{ .ID }}">
                 <input type="hidden" name="name" value="{{ .Name }}">
-                <input type="hidden" name="rarete" value="{{ .Rarete }}">
+                <input type="hidden" name="Rarity" value="{{ .Rarity }}">
              
 
               <button class="fav" type="submit">&#x2661;</button>
@@ -196,13 +303,13 @@
             <td><a class = "link" href="/item-details?id={{.ID}}">{{.Name}}</a></td>
           
             
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td>{{.Description}}</td>
             <td> <form action="/add-favorite" method="get">
                 <input type="hidden" name="category" value="items">
                 <input type="hidden" name="id" value="{{ .ID }}">
                 <input type="hidden" name="name" value="{{ .Name }}">
-                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+                <input type="hidden" name="rarity" value="{{ .Rarity }}">
               <button class="fav" type="submit">&#x2661;</button>
             </form></td>
         </tr>
@@ -228,7 +335,7 @@
            
             <td><a class = "link" href="/monster-details?id={{.ID}}">{{.Name}}</a></td>
             <td>{{.Species}}</td>
-            <td>{{.Type}}</td>
+            <td>{{.Size}}</td>
             <td>{{.Description}}</td>
             
             <td>
@@ -289,7 +396,7 @@
             <td>{{.Description}}</td>
             <td>
                 <ul>
-                    {{range .Rang}}
+                    {{range .Rank}}
                     <li>
                         Niveau {{.Niveau}} : {{.Description}}
                     </li>

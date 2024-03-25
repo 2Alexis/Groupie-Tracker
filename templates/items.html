@@ -52,13 +52,13 @@
             <td><a class ="link" href="/item-details?id={{.ID}}">{{.Name}}</a></td>
           
             
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td>{{.Description}}</td>
             <td> <form action="/add-favorite" method="get">
                 <input type="hidden" name="category" value="items">
                 <input type="hidden" name="id" value="{{ .ID }}">
                 <input type="hidden" name="name" value="{{ .Name }}">
-                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+                <input type="hidden" name="rarity" value="{{ .Rarity }}">
                 <button class = "fav" type="submit">&#x2661;</button>
             </form></td>
         </tr>

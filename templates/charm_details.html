@@ -23,10 +23,10 @@
                 <th>Level</th>
                 <th>Rareté</th>
             </tr>
-            {{range .Rang}}
+            {{range .CRank}}
             <tr>
                 <td>{{.Niveau}}</td>
-                <td>{{.Rarete}}</td>
+                <td>{{.Rarity}}</td>
             </tr>
             {{end}}
         </table>
@@ -37,7 +37,7 @@
                 <th>Level</th>
                 <th>Description</th>
             </tr>
-            {{range .Rang}}
+            {{range .CRank}}
             {{range .Skills}}
             <tr>
                 <td>{{.Name}}</td>

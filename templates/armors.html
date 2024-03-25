@@ -75,7 +75,7 @@
         <tr>
             <td><a class = "link" href="/armor-details?id={{.ID}}">{{.Name}}</a></td>
             <td>{{.Type}}</td>
-            <td>{{.Rarete}}</td>
+            <td>{{.Rarity}}</td>
             <td>{{.Rang}}</td>
             <td>{{.Defense.Base}}</td>
             <td>{{.Defense.Max}}</td>
@@ -104,7 +104,7 @@
                 <input type="hidden" name="name" value="{{ .Name }}">
                 <input type="hidden" name="type" value="{{ .Type }}">
                 <input type="hidden" name="rang" value="{{ .Rang }}">
-                <input type="hidden" name="rarity" value="{{ .Rarete }}">
+                <input type="hidden" name="rarity" value="{{ .Rarity }}">
                 <input type="hidden" name="imageMale" value="{{ .Assets.ImageH }}">
                 <input type="hidden" name="imageFemale" value="{{ .Assets.ImageF }}">
                 <button class = "fav" type="submit">&#x2661;</button>
