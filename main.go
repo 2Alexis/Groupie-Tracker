@@ -1219,6 +1219,96 @@ func monsterDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Fonction pour supprimer des éléments des favoris
+func removeFromFavoritesHandler(w http.ResponseWriter, r *http.Request) {
+	// Récupérer les paramètres de l'URL pour identifier l'élément à supprimer
+	itemID := r.URL.Query().Get("id")
+	itemType := r.URL.Query().Get("type")
+
+	// Vérifier le type d'élément et agir en conséquence
+	switch itemType {
+	case "weapons":
+		// Parcourir la liste des armes favorites pour trouver l'élément à supprimer
+		for i, weapon := range favoriteWeapons {
+			if strconv.Itoa(weapon.ID) == itemID {
+				// Supprimer l'élément de la liste des armes favorites
+				favoriteWeapons = append(favoriteWeapons[:i], favoriteWeapons[i+1:]...)
+				break
+			}
+		}
+	case "monsters":
+		// Parcourir la liste des monstres favoris pour trouver l'élément à supprimer
+		for i, monster := range favoriteMonsters {
+			if strconv.Itoa(monster.ID) == itemID {
+				// Supprimer l'élément de la liste des monstres favoris
+				favoriteMonsters = append(favoriteMonsters[:i], favoriteMonsters[i+1:]...)
+				break
+			}
+		}
+	case "items":
+		// Parcourir la liste des objets favoris pour trouver l'élément à supprimer
+		for i, item := range favoriteItems {
+			if strconv.Itoa(item.ID) == itemID && item.Category == "items" {
+				// Supprimer l'élément de la liste des objets favoris
+				favoriteItems = append(favoriteItems[:i], favoriteItems[i+1:]...)
+				break
+			}
+		}
+	case "skills":
+		// Parcourir la liste des compétences favorites pour trouver l'élément à supprimer
+		for i, skill := range favoriteSkills {
+			if strconv.Itoa(skill.ID) == itemID {
+				// Supprimer l'élément de la liste des compétences favorites
+				favoriteSkills = append(favoriteSkills[:i], favoriteSkills[i+1:]...)
+				break
+			}
+		}
+	case "events":
+		// Parcourir la liste des événements favoris pour trouver l'élément à supprimer
+		for i, event := range favoriteEvents {
+			if strconv.Itoa(event.ID) == itemID {
+				// Supprimer l'élément de la liste des événements favoris
+				favoriteEvents = append(favoriteEvents[:i], favoriteEvents[i+1:]...)
+				break
+			}
+		}
+	case "deco":
+		// Parcourir la liste des décorations favorites pour trouver l'élément à supprimer
+		for i, deco := range favoriteDeco {
+			if strconv.Itoa(deco.ID) == itemID {
+				// Supprimer l'élément de la liste des décorations favorites
+				favoriteDeco = append(favoriteDeco[:i], favoriteDeco[i+1:]...)
+				break
+			}
+		}
+	case "charms":
+		// Parcourir la liste des charmes favoris pour trouver l'élément à supprimer
+		for i, charm := range favoriteCharms {
+			if strconv.Itoa(charm.ID) == itemID {
+				// Supprimer l'élément de la liste des charmes favoris
+				favoriteCharms = append(favoriteCharms[:i], favoriteCharms[i+1:]...)
+				break
+			}
+		}
+	case "armors":
+		// Parcourir la liste des armures favorites pour trouver l'élément à supprimer
+		for i, armor := range favoriteArmors {
+			if strconv.Itoa(armor.ID) == itemID {
+				// Supprimer l'élément de la liste des armures favorites
+				favoriteArmors = append(favoriteArmors[:i], favoriteArmors[i+1:]...)
+				break
+			}
+		}
+	default:
+		// Type d'élément non pris en charge
+		http.Error(w, "Unsupported item type", http.StatusBadRequest)
+		return
+	}
+
+	// Rediriger l'utilisateur vers la page précédente (page de favoris)
+	http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
+}
+
 func addToFavoritesHandler(w http.ResponseWriter, r *http.Request) {
 	itemCate := r.URL.Query().Get("category")
 	itemID := r.URL.Query().Get("id")
@@ -1493,6 +1583,8 @@ func main() {
 
 	http.HandleFunc("/favorites", favoritesHandler)
 	http.HandleFunc("/add-favorite", addToFavoritesHandler)
+	http.HandleFunc("/remove-favorite", removeFromFavoritesHandler)
+
 	log.Println("Serveur en écoute sur le port 8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

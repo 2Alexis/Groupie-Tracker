@@ -10,6 +10,35 @@ body {
     background-color: #f8f8f8;
 }
 
+.link {
+    color: #007bff; /* Couleur du lien */
+    text-decoration: none; /* Supprime le soulignement par défaut du lien */
+   
+    transition: color 0.3s; /* Ajoute une transition fluide pour le changement de couleur */
+}
+
+.link:hover {
+    color: #0056b3; /* Change la couleur lors du survol */
+}
+
+.unfav {
+    margin-left: 7px;
+    padding: 6px 14px; /* Ajoute du rembourrage autour du texte du bouton */
+    background-color: #c13737; /* Couleur de fond du bouton */
+    color: white; /* Couleur du texte */
+    border: none; /* Supprime la bordure */
+    border-radius: 4px; /* Rend les coins arrondis */
+    cursor: pointer; /* Change le curseur en pointeur au survol */
+    transition: background-color 0.3s, padding 0.3s; /* Ajoute une transition fluide pour le changement de couleur de fond et de rembourrage */
+    text-decoration: none;
+}
+
+.unfav:hover {
+    background-color: #c13737; /* Change la couleur de fond lors du survol */
+    padding: 7px 15px; /* Augmente légèrement le rembourrage lors du survol */
+}
+
+
 .container {
     width: 80%;
     margin: 20px auto;
@@ -26,13 +55,7 @@ h1 {
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
     font-size: 36px;
 }
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #4e6bff;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-    font-size: 26px;
-}
+
 
 table {
     width: 100%;
@@ -60,6 +83,10 @@ ul {
     padding: 0;
     list-style-type: none;
    
+}
+
+.equipimg {
+    width: 100px;
 }
 
 li {
